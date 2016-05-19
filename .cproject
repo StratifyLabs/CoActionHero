@@ -6,20 +6,20 @@
 				<macros>
 					<stringMacro name="POSTPROCESS_win64" type="VALUE_TEXT" value="${POSTPROCESS_win32}"/>
 					<stringMacro name="TOOLSPATH_linux" type="VALUE_TEXT" value="${TOOLSPATH_macosx}"/>
-					<stringMacro name="RM_linux" type="VALUE_TEXT" value="${RM_macosx}"/>
 					<stringMacro name="POSTPROCESS_macosx" type="VALUE_TEXT" value="sh ${TOOLSPATH}/${HOST}/lib/ldscripts/kernel-post-process.sh"/>
-					<stringMacro name="CC_VERSION" type="VALUE_TEXT" value="5.3.0"/>
+					<stringMacro name="RM_linux" type="VALUE_TEXT" value="${RM_macosx}"/>
+					<stringMacro name="CC_VERSION" type="VALUE_TEXT" value="5.3.1"/>
 					<stringMacro name="POSTPROCESS_linux" type="VALUE_TEXT" value="${POSTPROCESS_macosx}"/>
 					<stringMacro name="TOOLSPATH" type="VALUE_TEXT" value="${TOOLSPATH_${OsType}}"/>
-					<stringMacro name="BUILD_FLOAT" type="VALUE_TEXT" value="soft-float"/>
+					<stringMacro name="BUILD_FLOAT" type="VALUE_TEXT" value="."/>
 					<stringMacro name="RM" type="VALUE_TEXT" value="${RM_${OsType}}"/>
-					<stringMacro name="START_ADDR" type="VALUE_TEXT" value="0x40000"/>
 					<stringMacro name="RM_win64" type="VALUE_TEXT" value="${RM_win32}"/>
-					<stringMacro name="HOST" type="VALUE_TEXT" value="arm-stratify-eabi"/>
+					<stringMacro name="START_ADDR" type="VALUE_TEXT" value="0x40000"/>
+					<stringMacro name="HOST" type="VALUE_TEXT" value="arm-none-eabi"/>
 					<stringMacro name="TOOLSPATH_win32" type="VALUE_TEXT" value="C:\StratifyLabs-SDK\StratifyLabs"/>
-					<stringMacro name="C_FLAGS" type="VALUE_TEXT" value="-g -fmessage-length=0 -fomit-frame-pointer -march=${BUILD_ARCH}  -mthumb"/>
+					<stringMacro name="C_FLAGS" type="VALUE_TEXT" value="-fmessage-length=0 -fomit-frame-pointer -mthumb -march=${BUILD_ARCH}"/>
 					<stringMacro name="RM_macosx" type="VALUE_TEXT" value="rm -rf"/>
-					<stringMacro name="TOOLSPATH_macosx" type="VALUE_TEXT" value="/usr/local/StratifyLabs"/>
+					<stringMacro name="TOOLSPATH_macosx" type="VALUE_TEXT" value="/Applications/StratifyLabs-SDK/Tools/gcc"/>
 					<stringMacro name="BUILD_DEVICE" type="VALUE_TEXT" value="lpc17xx"/>
 					<stringMacro name="BUILD_NAME" type="VALUE_TEXT" value="CoActionHero"/>
 					<stringMacro name="RM_win32" type="VALUE_TEXT" value="../script/clean.bat"/>
@@ -72,7 +72,7 @@
 									<listOptionValue builtIn="false" value="m"/>
 									<listOptionValue builtIn="false" value="c"/>
 									<listOptionValue builtIn="false" value="stratify_sys${BUILD_TYPE}"/>
-									<listOptionValue builtIn="false" value="gcc"/>
+									<listOptionValue builtIn="false" value="compiler_rt_kernel"/>
 								</option>
 								<option id="gnu.c.link.option.paths.216589356" name="Library search path (-L)" superClass="gnu.c.link.option.paths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="&quot;${TOOLSPATH}/${HOST}/lib/${BUILD_ARCH}/${BUILD_FLOAT}&quot;"/>
@@ -102,20 +102,20 @@
 				<macros>
 					<stringMacro name="POSTPROCESS_win64" type="VALUE_TEXT" value="${POSTPROCESS_win32}"/>
 					<stringMacro name="TOOLSPATH_linux" type="VALUE_TEXT" value="${TOOLSPATH_macosx}"/>
-					<stringMacro name="POSTPROCESS_macosx" type="VALUE_TEXT" value="sh ${TOOLSPATH}/${HOST}/lib/ldscripts/kernel-post-process.sh"/>
 					<stringMacro name="RM_linux" type="VALUE_TEXT" value="${RM_macosx}"/>
-					<stringMacro name="CC_VERSION" type="VALUE_TEXT" value="5.3.0"/>
+					<stringMacro name="POSTPROCESS_macosx" type="VALUE_TEXT" value="sh ${TOOLSPATH}/${HOST}/lib/ldscripts/kernel-post-process.sh"/>
+					<stringMacro name="CC_VERSION" type="VALUE_TEXT" value="5.3.1"/>
 					<stringMacro name="POSTPROCESS_linux" type="VALUE_TEXT" value="${POSTPROCESS_macosx}"/>
 					<stringMacro name="TOOLSPATH" type="VALUE_TEXT" value="${TOOLSPATH_${OsType}}"/>
-					<stringMacro name="BUILD_FLOAT" type="VALUE_TEXT" value="soft-float"/>
+					<stringMacro name="BUILD_FLOAT" type="VALUE_TEXT" value="."/>
 					<stringMacro name="RM" type="VALUE_TEXT" value="${RM_${OsType}}"/>
-					<stringMacro name="RM_win64" type="VALUE_TEXT" value="${RM_win32}"/>
 					<stringMacro name="START_ADDR" type="VALUE_TEXT" value="0x40000"/>
-					<stringMacro name="HOST" type="VALUE_TEXT" value="arm-stratify-eabi"/>
+					<stringMacro name="RM_win64" type="VALUE_TEXT" value="${RM_win32}"/>
+					<stringMacro name="HOST" type="VALUE_TEXT" value="arm-none-eabi"/>
 					<stringMacro name="TOOLSPATH_win32" type="VALUE_TEXT" value="C:\StratifyLabs-SDK\StratifyLabs"/>
-					<stringMacro name="C_FLAGS" type="VALUE_TEXT" value="-g -fmessage-length=0 -fomit-frame-pointer -march=${BUILD_ARCH} -mthumb"/>
+					<stringMacro name="C_FLAGS" type="VALUE_TEXT" value="-fmessage-length=0 -fomit-frame-pointer -march=${BUILD_ARCH} -mthumb"/>
 					<stringMacro name="RM_macosx" type="VALUE_TEXT" value="rm -rf"/>
-					<stringMacro name="TOOLSPATH_macosx" type="VALUE_TEXT" value="/usr/local/StratifyLabs"/>
+					<stringMacro name="TOOLSPATH_macosx" type="VALUE_TEXT" value="/Applications/StratifyLabs-SDK/Tools/gcc"/>
 					<stringMacro name="BUILD_DEVICE" type="VALUE_TEXT" value="lpc17xx"/>
 					<stringMacro name="BUILD_NAME" type="VALUE_TEXT" value="CoActionHero"/>
 					<stringMacro name="RM_win32" type="VALUE_TEXT" value="../script/clean.bat"/>
@@ -197,20 +197,20 @@
 				<macros>
 					<stringMacro name="POSTPROCESS_win64" type="VALUE_TEXT" value="${POSTPROCESS_win32}"/>
 					<stringMacro name="TOOLSPATH_linux" type="VALUE_TEXT" value="${TOOLSPATH_macosx}"/>
-					<stringMacro name="RM_linux" type="VALUE_TEXT" value="${RM_macosx}"/>
 					<stringMacro name="POSTPROCESS_macosx" type="VALUE_TEXT" value="sh ${TOOLSPATH}/${HOST}/lib/ldscripts/kernel-post-process.sh"/>
-					<stringMacro name="CC_VERSION" type="VALUE_TEXT" value="5.3.0"/>
+					<stringMacro name="RM_linux" type="VALUE_TEXT" value="${RM_macosx}"/>
+					<stringMacro name="CC_VERSION" type="VALUE_TEXT" value="5.3.1"/>
 					<stringMacro name="POSTPROCESS_linux" type="VALUE_TEXT" value="${POSTPROCESS_macosx}"/>
 					<stringMacro name="TOOLSPATH" type="VALUE_TEXT" value="${TOOLSPATH_${OsType}}"/>
-					<stringMacro name="BUILD_FLOAT" type="VALUE_TEXT" value="soft-float"/>
+					<stringMacro name="BUILD_FLOAT" type="VALUE_TEXT" value="."/>
 					<stringMacro name="RM" type="VALUE_TEXT" value="${RM_${OsType}}"/>
-					<stringMacro name="START_ADDR" type="VALUE_TEXT" value="0"/>
 					<stringMacro name="RM_win64" type="VALUE_TEXT" value="${RM_win32}"/>
-					<stringMacro name="HOST" type="VALUE_TEXT" value="arm-stratify-eabi"/>
+					<stringMacro name="START_ADDR" type="VALUE_TEXT" value="0"/>
+					<stringMacro name="HOST" type="VALUE_TEXT" value="arm-none-eabi"/>
 					<stringMacro name="TOOLSPATH_win32" type="VALUE_TEXT" value="C:\StratifyLabs-SDK\StratifyLabs"/>
-					<stringMacro name="C_FLAGS" type="VALUE_TEXT" value="-g -fmessage-length=0 -fomit-frame-pointer -march=${BUILD_ARCH} -mthumb"/>
+					<stringMacro name="C_FLAGS" type="VALUE_TEXT" value="-fmessage-length=0 -fomit-frame-pointer -march=${BUILD_ARCH} -mthumb"/>
 					<stringMacro name="RM_macosx" type="VALUE_TEXT" value="rm -rf"/>
-					<stringMacro name="TOOLSPATH_macosx" type="VALUE_TEXT" value="/usr/local/StratifyLabs"/>
+					<stringMacro name="TOOLSPATH_macosx" type="VALUE_TEXT" value="/Applications/StratifyLabs-SDK/Tools/gcc"/>
 					<stringMacro name="BUILD_DEVICE" type="VALUE_TEXT" value="lpc17xx"/>
 					<stringMacro name="RM_win32" type="VALUE_TEXT" value="../script/clean.bat"/>
 					<stringMacro name="BUILD_NAME" type="VALUE_TEXT" value="CoActionHero"/>
@@ -290,20 +290,20 @@
 				<macros>
 					<stringMacro name="POSTPROCESS_win64" type="VALUE_TEXT" value="${POSTPROCESS_win32}"/>
 					<stringMacro name="TOOLSPATH_linux" type="VALUE_TEXT" value="${TOOLSPATH_macosx}"/>
-					<stringMacro name="POSTPROCESS_macosx" type="VALUE_TEXT" value="sh ${TOOLSPATH}/${HOST}/lib/ldscripts/kernel-post-process.sh"/>
 					<stringMacro name="RM_linux" type="VALUE_TEXT" value="${RM_macosx}"/>
-					<stringMacro name="CC_VERSION" type="VALUE_TEXT" value="5.3.0"/>
+					<stringMacro name="POSTPROCESS_macosx" type="VALUE_TEXT" value="sh ${TOOLSPATH}/${HOST}/lib/ldscripts/kernel-post-process.sh"/>
+					<stringMacro name="CC_VERSION" type="VALUE_TEXT" value="5.3.1"/>
 					<stringMacro name="POSTPROCESS_linux" type="VALUE_TEXT" value="${POSTPROCESS_macosx}"/>
 					<stringMacro name="TOOLSPATH" type="VALUE_TEXT" value="${TOOLSPATH_${OsType}}"/>
-					<stringMacro name="BUILD_FLOAT" type="VALUE_TEXT" value="soft-float"/>
+					<stringMacro name="BUILD_FLOAT" type="VALUE_TEXT" value="."/>
 					<stringMacro name="RM" type="VALUE_TEXT" value="${RM_${OsType}}"/>
-					<stringMacro name="RM_win64" type="VALUE_TEXT" value="${RM_win32}"/>
 					<stringMacro name="START_ADDR" type="VALUE_TEXT" value="0"/>
-					<stringMacro name="HOST" type="VALUE_TEXT" value="arm-stratify-eabi"/>
+					<stringMacro name="RM_win64" type="VALUE_TEXT" value="${RM_win32}"/>
+					<stringMacro name="HOST" type="VALUE_TEXT" value="arm-none-eabi"/>
 					<stringMacro name="TOOLSPATH_win32" type="VALUE_TEXT" value="C:\StratifyLabs-SDK\StratifyLabs"/>
-					<stringMacro name="C_FLAGS" type="VALUE_TEXT" value="-g -fmessage-length=0 -fomit-frame-pointer -march=${BUILD_ARCH} -mthumb"/>
+					<stringMacro name="C_FLAGS" type="VALUE_TEXT" value="-fmessage-length=0 -fomit-frame-pointer -march=${BUILD_ARCH} -mthumb"/>
 					<stringMacro name="RM_macosx" type="VALUE_TEXT" value="rm -rf"/>
-					<stringMacro name="TOOLSPATH_macosx" type="VALUE_TEXT" value="/usr/local/StratifyLabs"/>
+					<stringMacro name="TOOLSPATH_macosx" type="VALUE_TEXT" value="/Applications/StratifyLabs-SDK/Tools/gcc"/>
 					<stringMacro name="BUILD_DEVICE" type="VALUE_TEXT" value="lpc17xx"/>
 					<stringMacro name="BUILD_NAME" type="VALUE_TEXT" value="CoActionHero"/>
 					<stringMacro name="RM_win32" type="VALUE_TEXT" value="../script/clean.bat"/>

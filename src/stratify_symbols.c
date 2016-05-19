@@ -18,6 +18,7 @@ limitations under the License.
 
 #include <stratify/symbols.h>
 
+#define SYMBOLS_IGNORE_DCOMPLEX 1
 #define SYMBOLS_IGNORE_SON 1
 #define SYMBOLS_IGNORE_MG 1
 
