@@ -34,7 +34,7 @@ limitations under the License.
 #include <stratify/stratify.h>
 #include <device/sys.h>
 
-#include "link_transport_usb.h"
+#include "link_transport.h"
 
 #define STFY_SYSTEM_CLOCK 120000000
 #define STFY_SYSTEM_OSC 12000000
@@ -71,7 +71,7 @@ const stfy_board_config_t stfy_board_config = {
 		.sys_name = "CoAction Hero",
 		.sys_version = "1.0.0",
 		.sys_memory_size = STFY_SYSTEM_MEMORY_SIZE,
-		.link_transport = &link_transport_usb
+		.link_transport = &link_transport
 
 };
 
@@ -113,15 +113,6 @@ const uartfifo_cfg_t uart3_fifo_cfg = UARTFIFO_DEVICE_CFG(3,
 		uart3_fifo_buffer,
 		UART3_DEVFIFO_BUFFER_SIZE);
 uartfifo_state_t uart3_fifo_state MCU_SYS_MEM;
-
-#define USB0_DEVFIFO_BUFFER_SIZE 64
-char usb0_fifo_buffer[USB0_DEVFIFO_BUFFER_SIZE] MCU_SYS_MEM;
-const usbfifo_cfg_t usb0_fifo_cfg = USBFIFO_DEVICE_CFG(0,
-		LINK_USBPHY_BULK_ENDPOINT,
-		LINK_USBPHY_BULK_ENDPOINT_SIZE,
-		usb0_fifo_buffer,
-		USB0_DEVFIFO_BUFFER_SIZE);
-usbfifo_state_t usb0_fifo_state MCU_SYS_MEM;
 
 #define STDIO_BUFFER_SIZE 128
 
@@ -198,7 +189,7 @@ const device_t devices[] = {
 #endif
 
 		//system devices
-		USBFIFO_DEVICE("link-phy-usb", &usb0_fifo_cfg, &usb0_fifo_state, 0666, USER_ROOT, GROUP_ROOT),
+		USBFIFO_DEVICE("link-phy-usb", &stratify_link_transport_usb_fifo_cfg, &stratify_link_transport_usb_fifo_state, 0666, USER_ROOT, GROUP_ROOT),
 
 		SYS_DEVICE,
 		DEVICE_TERMINATOR
