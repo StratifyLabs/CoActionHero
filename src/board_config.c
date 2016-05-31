@@ -39,7 +39,7 @@ limitations under the License.
 #define STFY_SYSTEM_CLOCK 120000000
 #define STFY_SYSTEM_MEMORY_SIZE (8192*2)
 
-void board_event_handler(int event, void * args);
+static void board_event_handler(int event, void * args);
 
 const mcu_board_config_t mcu_board_config = {
 		.core_osc_freq = 12000000UL, //12MHZ
@@ -55,8 +55,9 @@ const mcu_board_config_t mcu_board_config = {
 
 void board_event_handler(int event, void * args){
 	switch(event){
-	case MCU_BOARD_CONFIG_EVENT_PRIV_ERROR:
-		stratify_led_priv_error(0);
+	case MCU_BOARD_CONFIG_EVENT_PRIV_FATAL:
+		//start the bootloader on a fatal event
+		mcu_core_invokebootloader(0, 0);
 		break;
 	case MCU_BOARD_CONFIG_EVENT_START_LINK:
 		stratify_led_startup();
