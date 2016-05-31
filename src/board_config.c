@@ -37,24 +37,38 @@ limitations under the License.
 #include "link_transport.h"
 
 #define STFY_SYSTEM_CLOCK 120000000
-#define STFY_SYSTEM_OSC 12000000
 #define STFY_SYSTEM_MEMORY_SIZE (8192*2)
 
+void board_event_handler(int event, void * args);
+
 const mcu_board_config_t mcu_board_config = {
-		.core_osc_freq = STFY_SYSTEM_OSC,
+		.core_osc_freq = 12000000UL, //12MHZ
 		.core_cpu_freq = STFY_SYSTEM_CLOCK,
 		.core_periph_freq = STFY_SYSTEM_CLOCK,
 		.usb_max_packet_zero = MCU_CORE_USB_MAX_PACKET_ZERO_VALUE,
-		.led.port = 2, .led.pin = 10
+		.event = board_event_handler,
+		.led.port = 2, .led.pin = 10,
+		.flags = 0
 };
 
 #define SCHED_TASK_TOTAL 10
 
+void board_event_handler(int event, void * args){
+	switch(event){
+	case MCU_BOARD_CONFIG_EVENT_PRIV_ERROR:
+		stratify_led_priv_error(0);
+		break;
+	case MCU_BOARD_CONFIG_EVENT_START_LINK:
+		stratify_led_startup();
+		break;
+	}
+}
 
-const stfy_board_config_t stfy_board_config = {
+
+
+const stratify_board_config_t stratify_board_config = {
 		.clk_usecond_tmr = 3,
 		.task_total = SCHED_TASK_TOTAL,
-		.resd = 0,
 		.clk_usec_mult = (uint32_t)(STFY_SYSTEM_CLOCK / 1000000),
 		.clk_nsec_div = (uint32_t)((uint64_t)1024 * 1000000000 / STFY_SYSTEM_CLOCK),
 #ifdef __STDIO_VCP
@@ -71,12 +85,13 @@ const stfy_board_config_t stfy_board_config = {
 		.sys_name = "CoAction Hero",
 		.sys_version = "1.0.0",
 		.sys_memory_size = STFY_SYSTEM_MEMORY_SIZE,
-		.link_transport = &link_transport
-
+		.start = stratify_default_thread,
+		.start_args = &link_transport,
+		.start_stack_size = STRATIFY_DEFAULT_START_STACK_SIZE
 };
 
-volatile sched_task_t stfy_sched_table[SCHED_TASK_TOTAL] MCU_SYS_MEM;
-task_t stfy_task_table[SCHED_TASK_TOTAL] MCU_SYS_MEM;
+volatile sched_task_t stratify_sched_table[SCHED_TASK_TOTAL] MCU_SYS_MEM;
+task_t stratify_task_table[SCHED_TASK_TOTAL] MCU_SYS_MEM;
 
 
 #define USER_ROOT 0

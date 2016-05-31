@@ -26,8 +26,6 @@ link_transport_driver_t link_transport = {
 
 #define USBDEV_CONNECT_PORT 1
 #define USBDEV_CONNECT_PINMASK (1<<19)
-#define CONNECT_PORT "/dev/pio1"
-#define CONNECT_PINMASK (1<<19)
 
 link_transport_phy_t link_transport_open(const char * name, int baudrate){
 	pio_attr_t attr;
