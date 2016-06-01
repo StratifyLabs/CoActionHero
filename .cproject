@@ -4,44 +4,44 @@
 		<cconfiguration id="cdt.managedbuild.config.gnu.cross.exe.debug.262901993">
 			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="cdt.managedbuild.config.gnu.cross.exe.debug.262901993" moduleId="org.eclipse.cdt.core.settings" name="build_release">
 				<macros>
-					<stringMacro name="TOOLSPATH" type="VALUE_TEXT" value="${TOOLSPATH_${OsType}}"/>
-					<stringMacro name="POSTPROCESS_macosx" type="VALUE_TEXT" value="sh ${TOOLSPATH}/${HOST}/lib/ldscripts/kernel-post-process.sh"/>
-					<stringMacro name="HOST" type="VALUE_TEXT" value="arm-none-eabi"/>
-					<stringMacro name="RM_win32" type="VALUE_TEXT" value="../script/clean.bat"/>
-					<stringMacro name="TOOLSPATH_win32" type="VALUE_TEXT" value="C:\StratifyLabs-SDK\Tools\gcc"/>
 					<stringMacro name="POSTPROCESS_win64" type="VALUE_TEXT" value="${POSTPROCESS_win32}"/>
-					<stringMacro name="START_ADDR" type="VALUE_TEXT" value="0x40000"/>
-					<stringMacro name="HARDWARE_ID" type="VALUE_TEXT" value="0x00000001"/>
-					<stringMacro name="SL" type="VALUE_TEXT" value="${DirectoryDelimiter}"/>
-					<stringMacro name="POSTPROCESS_linux" type="VALUE_TEXT" value="${POSTPROCESS_macosx}"/>
-					<stringMacro name="BUILD_DEVICE" type="VALUE_TEXT" value="lpc17xx"/>
-					<stringMacro name="POSTPROCESS" type="VALUE_TEXT" value="${POSTPROCESS_${OsType}}"/>
+					<stringMacro name="TOOLSPATH_linux" type="VALUE_TEXT" value="${TOOLSPATH_macosx}"/>
+					<stringMacro name="POSTPROCESS_macosx" type="VALUE_TEXT" value="sh ${TOOLSPATH}/${HOST}/lib/ldscripts/kernel-post-process.sh"/>
+					<stringMacro name="RM_linux" type="VALUE_TEXT" value="${RM_macosx}"/>
 					<stringMacro name="CC_VERSION" type="VALUE_TEXT" value="5.3.1"/>
+					<stringMacro name="POSTPROCESS_linux" type="VALUE_TEXT" value="${POSTPROCESS_macosx}"/>
+					<stringMacro name="TOOLSPATH" type="VALUE_TEXT" value="${TOOLSPATH_${OsType}}"/>
+					<stringMacro name="BUILD_FLOAT" type="VALUE_TEXT" value="."/>
+					<stringMacro name="RM" type="VALUE_TEXT" value="${RM_${OsType}}"/>
+					<stringMacro name="START_ADDR" type="VALUE_TEXT" value="0x40000"/>
+					<stringMacro name="RM_win64" type="VALUE_TEXT" value="${RM_win32}"/>
+					<stringMacro name="HOST" type="VALUE_TEXT" value="arm-none-eabi"/>
+					<stringMacro name="TOOLSPATH_win32" type="VALUE_TEXT" value="C:\StratifyLabs-SDK\Tools\gcc"/>
+					<stringMacro name="C_FLAGS" type="VALUE_TEXT" value="-fmessage-length=0 -fomit-frame-pointer -mthumb -march=${BUILD_ARCH}"/>
+					<stringMacro name="RM_macosx" type="VALUE_TEXT" value="rm -rf"/>
+					<stringMacro name="TOOLSPATH_macosx" type="VALUE_TEXT" value="/Applications/StratifyLabs-SDK/Tools/gcc"/>
+					<stringMacro name="BUILD_DEVICE" type="VALUE_TEXT" value="lpc17xx"/>
+					<stringMacro name="BUILD_NAME" type="VALUE_TEXT" value="CoActionHero"/>
+					<stringMacro name="RM_win32" type="VALUE_TEXT" value="../script/clean.bat"/>
+					<stringMacro name="SL" type="VALUE_TEXT" value="${DirectoryDelimiter}"/>
 					<stringMacro name="BUILD_TYPE" type="VALUE_TEXT" value=""/>
 					<stringMacro name="TOOLSPATH_win64" type="VALUE_TEXT" value="${TOOLSPATH_win32}"/>
 					<stringMacro name="DEVICE" type="VALUE_TEXT" value="lpc1759"/>
-					<stringMacro name="RM_win64" type="VALUE_TEXT" value="${RM_win32}"/>
-					<stringMacro name="TOOLSPATH_linux" type="VALUE_TEXT" value="${TOOLSPATH_macosx}"/>
-					<stringMacro name="RM_linux" type="VALUE_TEXT" value="${RM_macosx}"/>
-					<stringMacro name="C_FLAGS" type="VALUE_TEXT" value="-fmessage-length=0 -fomit-frame-pointer -mthumb -march=${BUILD_ARCH}"/>
+					<stringMacro name="HARDWARE_ID" type="VALUE_TEXT" value="0x00000001"/>
+					<stringMacro name="POSTPROCESS" type="VALUE_TEXT" value="${POSTPROCESS_${OsType}}"/>
 					<stringMacro name="POSTPROCESS_win32" type="VALUE_TEXT" value="${TOOLSPATH}/${HOST}/lib/ldscripts/kernel-post-process.bat"/>
-					<stringMacro name="RM_macosx" type="VALUE_TEXT" value="rm -rf"/>
-					<stringMacro name="TOOLSPATH_macosx" type="VALUE_TEXT" value="/Applications/StratifyLabs-SDK/Tools/gcc"/>
-					<stringMacro name="RM" type="VALUE_TEXT" value="${RM_${OsType}}"/>
-					<stringMacro name="BUILD_FLOAT" type="VALUE_TEXT" value="."/>
-					<stringMacro name="BUILD_NAME" type="VALUE_TEXT" value="CoActionHero"/>
 					<stringMacro name="BUILD_ARCH" type="VALUE_TEXT" value="armv7-m"/>
 				</macros>
 				<externalSettings/>
 				<extensions>
-					<extension id="org.eclipse.cdt.core.ELF" point="org.eclipse.cdt.core.BinaryParser"/>
 					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 					<extension id="org.eclipse.cdt.core.GASErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 					<extension id="org.eclipse.cdt.core.GLDErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.ELF" point="org.eclipse.cdt.core.BinaryParser"/>
 				</extensions>
 			</storageModule>
 			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-				<configuration artifactExtension="elf" artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.exe,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug" cleanCommand="${RM}" description="" id="cdt.managedbuild.config.gnu.cross.exe.debug.262901993" name="build_release" parent="cdt.managedbuild.config.gnu.cross.exe.debug" postannouncebuildStep="" postbuildStep="${POSTPROCESS} ${TOOLSPATH} ${HOST} ${ProjName} ${BUILD_NAME} ${BUILD_ARCH} ${BUILD_FLOAT} ${BUILD_TYPE}" preannouncebuildStep="">
+				<configuration artifactExtension="elf" artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe" buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.exe" cleanCommand="${RM}" description="" id="cdt.managedbuild.config.gnu.cross.exe.debug.262901993" name="build_release" parent="cdt.managedbuild.config.gnu.cross.exe.debug" postannouncebuildStep="" postbuildStep="${POSTPROCESS} ${TOOLSPATH} ${HOST} ${ProjName} ${BUILD_NAME} ${BUILD_ARCH} ${BUILD_FLOAT} ${BUILD_TYPE}" preannouncebuildStep="">
 					<folderInfo id="cdt.managedbuild.config.gnu.cross.exe.debug.262901993." name="/" resourcePath="">
 						<toolChain id="cdt.managedbuild.toolchain.gnu.cross.exe.debug.1563816576" name="Cross GCC" nonInternalBuilderId="cdt.managedbuild.builder.gnu.cross" superClass="cdt.managedbuild.toolchain.gnu.cross.exe.debug">
 							<option id="cdt.managedbuild.option.gnu.cross.prefix.81919210" name="Prefix" superClass="cdt.managedbuild.option.gnu.cross.prefix" value="${HOST}-" valueType="string"/>
@@ -101,43 +101,43 @@
 		<cconfiguration id="cdt.managedbuild.config.gnu.cross.exe.debug.262901993.2064609313">
 			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="cdt.managedbuild.config.gnu.cross.exe.debug.262901993.2064609313" moduleId="org.eclipse.cdt.core.settings" name="build_debug">
 				<macros>
-					<stringMacro name="TOOLSPATH" type="VALUE_TEXT" value="${TOOLSPATH_${OsType}}"/>
-					<stringMacro name="POSTPROCESS_macosx" type="VALUE_TEXT" value="sh ${TOOLSPATH}/${HOST}/lib/ldscripts/kernel-post-process.sh"/>
-					<stringMacro name="HOST" type="VALUE_TEXT" value="arm-none-eabi"/>
-					<stringMacro name="RM_win32" type="VALUE_TEXT" value="../script/clean.bat"/>
-					<stringMacro name="TOOLSPATH_win32" type="VALUE_TEXT" value="C:\StratifyLabs-SDK\Tools\gcc"/>
 					<stringMacro name="POSTPROCESS_win64" type="VALUE_TEXT" value="${POSTPROCESS_win32}"/>
-					<stringMacro name="START_ADDR" type="VALUE_TEXT" value="0x40000"/>
-					<stringMacro name="HARDWARE_ID" type="VALUE_TEXT" value="0x00000001"/>
-					<stringMacro name="POSTPROCESS_linux" type="VALUE_TEXT" value="${POSTPROCESS_macosx}"/>
-					<stringMacro name="BUILD_DEVICE" type="VALUE_TEXT" value="lpc17xx"/>
-					<stringMacro name="POSTPROCESS" type="VALUE_TEXT" value="${POSTPROCESS_${OsType}}"/>
+					<stringMacro name="TOOLSPATH_linux" type="VALUE_TEXT" value="${TOOLSPATH_macosx}"/>
+					<stringMacro name="POSTPROCESS_macosx" type="VALUE_TEXT" value="sh ${TOOLSPATH}/${HOST}/lib/ldscripts/kernel-post-process.sh"/>
+					<stringMacro name="RM_linux" type="VALUE_TEXT" value="${RM_macosx}"/>
 					<stringMacro name="CC_VERSION" type="VALUE_TEXT" value="5.3.1"/>
+					<stringMacro name="POSTPROCESS_linux" type="VALUE_TEXT" value="${POSTPROCESS_macosx}"/>
+					<stringMacro name="TOOLSPATH" type="VALUE_TEXT" value="${TOOLSPATH_${OsType}}"/>
+					<stringMacro name="BUILD_FLOAT" type="VALUE_TEXT" value="."/>
+					<stringMacro name="RM" type="VALUE_TEXT" value="${RM_${OsType}}"/>
+					<stringMacro name="START_ADDR" type="VALUE_TEXT" value="0x40000"/>
+					<stringMacro name="RM_win64" type="VALUE_TEXT" value="${RM_win32}"/>
+					<stringMacro name="HOST" type="VALUE_TEXT" value="arm-none-eabi"/>
+					<stringMacro name="TOOLSPATH_win32" type="VALUE_TEXT" value="C:\StratifyLabs-SDK\Tools\gcc"/>
+					<stringMacro name="C_FLAGS" type="VALUE_TEXT" value="-fmessage-length=0 -fomit-frame-pointer -march=${BUILD_ARCH} -mthumb"/>
+					<stringMacro name="RM_macosx" type="VALUE_TEXT" value="rm -rf"/>
+					<stringMacro name="TOOLSPATH_macosx" type="VALUE_TEXT" value="/Applications/StratifyLabs-SDK/Tools/gcc"/>
+					<stringMacro name="BUILD_DEVICE" type="VALUE_TEXT" value="lpc17xx"/>
+					<stringMacro name="BUILD_NAME" type="VALUE_TEXT" value="CoActionHero"/>
+					<stringMacro name="RM_win32" type="VALUE_TEXT" value="../script/clean.bat"/>
 					<stringMacro name="BUILD_TYPE" type="VALUE_TEXT" value="_debug"/>
 					<stringMacro name="TOOLSPATH_win64" type="VALUE_TEXT" value="${TOOLSPATH_win32}"/>
 					<stringMacro name="DEVICE" type="VALUE_TEXT" value="lpc1759"/>
-					<stringMacro name="RM_win64" type="VALUE_TEXT" value="${RM_win32}"/>
-					<stringMacro name="TOOLSPATH_linux" type="VALUE_TEXT" value="${TOOLSPATH_macosx}"/>
-					<stringMacro name="RM_linux" type="VALUE_TEXT" value="${RM_macosx}"/>
-					<stringMacro name="C_FLAGS" type="VALUE_TEXT" value="-fmessage-length=0 -fomit-frame-pointer -march=${BUILD_ARCH} -mthumb"/>
+					<stringMacro name="HARDWARE_ID" type="VALUE_TEXT" value="0x00000001"/>
+					<stringMacro name="POSTPROCESS" type="VALUE_TEXT" value="${POSTPROCESS_${OsType}}"/>
 					<stringMacro name="POSTPROCESS_win32" type="VALUE_TEXT" value="${TOOLSPATH}/${HOST}/lib/ldscripts/kernel-post-process.bat"/>
-					<stringMacro name="RM_macosx" type="VALUE_TEXT" value="rm -rf"/>
-					<stringMacro name="TOOLSPATH_macosx" type="VALUE_TEXT" value="/Applications/StratifyLabs-SDK/Tools/gcc"/>
-					<stringMacro name="RM" type="VALUE_TEXT" value="${RM_${OsType}}"/>
-					<stringMacro name="BUILD_FLOAT" type="VALUE_TEXT" value="."/>
-					<stringMacro name="BUILD_NAME" type="VALUE_TEXT" value="CoActionHero"/>
 					<stringMacro name="BUILD_ARCH" type="VALUE_TEXT" value="armv7-m"/>
 				</macros>
 				<externalSettings/>
 				<extensions>
-					<extension id="org.eclipse.cdt.core.ELF" point="org.eclipse.cdt.core.BinaryParser"/>
 					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 					<extension id="org.eclipse.cdt.core.GASErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 					<extension id="org.eclipse.cdt.core.GLDErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.ELF" point="org.eclipse.cdt.core.BinaryParser"/>
 				</extensions>
 			</storageModule>
 			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-				<configuration artifactExtension="elf" artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.exe,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug" cleanCommand="${RM}" description="" id="cdt.managedbuild.config.gnu.cross.exe.debug.262901993.2064609313" name="build_debug" parent="cdt.managedbuild.config.gnu.cross.exe.debug" postannouncebuildStep="" postbuildStep="${POSTPROCESS} ${TOOLSPATH} ${HOST} ${ProjName} ${BUILD_NAME} ${BUILD_ARCH} ${BUILD_FLOAT} ${BUILD_TYPE}" preannouncebuildStep="">
+				<configuration artifactExtension="elf" artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe" buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.exe" cleanCommand="${RM}" description="" id="cdt.managedbuild.config.gnu.cross.exe.debug.262901993.2064609313" name="build_debug" parent="cdt.managedbuild.config.gnu.cross.exe.debug" postannouncebuildStep="" postbuildStep="${POSTPROCESS} ${TOOLSPATH} ${HOST} ${ProjName} ${BUILD_NAME} ${BUILD_ARCH} ${BUILD_FLOAT} ${BUILD_TYPE}" preannouncebuildStep="">
 					<folderInfo id="cdt.managedbuild.config.gnu.cross.exe.debug.262901993.2064609313." name="/" resourcePath="">
 						<toolChain id="cdt.managedbuild.toolchain.gnu.cross.exe.debug.1652666494" name="Cross GCC" nonInternalBuilderId="cdt.managedbuild.builder.gnu.cross" superClass="cdt.managedbuild.toolchain.gnu.cross.exe.debug">
 							<option id="cdt.managedbuild.option.gnu.cross.prefix.598591197" name="Prefix" superClass="cdt.managedbuild.option.gnu.cross.prefix" value="${HOST}-" valueType="string"/>
@@ -196,43 +196,43 @@
 		<cconfiguration id="cdt.managedbuild.config.gnu.cross.exe.debug.262901993.2064609313.609039573">
 			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="cdt.managedbuild.config.gnu.cross.exe.debug.262901993.2064609313.609039573" moduleId="org.eclipse.cdt.core.settings" name="build_debug_boot">
 				<macros>
-					<stringMacro name="TOOLSPATH" type="VALUE_TEXT" value="${TOOLSPATH_${OsType}}"/>
-					<stringMacro name="POSTPROCESS_macosx" type="VALUE_TEXT" value="sh ${TOOLSPATH}/${HOST}/lib/ldscripts/kernel-post-process.sh"/>
-					<stringMacro name="HOST" type="VALUE_TEXT" value="arm-none-eabi"/>
-					<stringMacro name="RM_win32" type="VALUE_TEXT" value="../script/clean.bat"/>
-					<stringMacro name="TOOLSPATH_win32" type="VALUE_TEXT" value="C:\StratifyLabs-SDK\Tools\gcc"/>
 					<stringMacro name="POSTPROCESS_win64" type="VALUE_TEXT" value="${POSTPROCESS_win32}"/>
-					<stringMacro name="START_ADDR" type="VALUE_TEXT" value="0"/>
-					<stringMacro name="HARDWARE_ID" type="VALUE_TEXT" value="0x00000001"/>
-					<stringMacro name="POSTPROCESS_linux" type="VALUE_TEXT" value="${POSTPROCESS_macosx}"/>
-					<stringMacro name="BUILD_DEVICE" type="VALUE_TEXT" value="lpc17xx"/>
-					<stringMacro name="POSTPROCESS" type="VALUE_TEXT" value="${POSTPROCESS_${OsType}}"/>
+					<stringMacro name="TOOLSPATH_linux" type="VALUE_TEXT" value="${TOOLSPATH_macosx}"/>
+					<stringMacro name="POSTPROCESS_macosx" type="VALUE_TEXT" value="sh ${TOOLSPATH}/${HOST}/lib/ldscripts/kernel-post-process.sh"/>
+					<stringMacro name="RM_linux" type="VALUE_TEXT" value="${RM_macosx}"/>
 					<stringMacro name="CC_VERSION" type="VALUE_TEXT" value="5.3.1"/>
+					<stringMacro name="POSTPROCESS_linux" type="VALUE_TEXT" value="${POSTPROCESS_macosx}"/>
+					<stringMacro name="TOOLSPATH" type="VALUE_TEXT" value="${TOOLSPATH_${OsType}}"/>
+					<stringMacro name="BUILD_FLOAT" type="VALUE_TEXT" value="."/>
+					<stringMacro name="RM" type="VALUE_TEXT" value="${RM_${OsType}}"/>
+					<stringMacro name="START_ADDR" type="VALUE_TEXT" value="0"/>
+					<stringMacro name="RM_win64" type="VALUE_TEXT" value="${RM_win32}"/>
+					<stringMacro name="HOST" type="VALUE_TEXT" value="arm-none-eabi"/>
+					<stringMacro name="TOOLSPATH_win32" type="VALUE_TEXT" value="C:\StratifyLabs-SDK\Tools\gcc"/>
+					<stringMacro name="C_FLAGS" type="VALUE_TEXT" value="-fmessage-length=0 -fomit-frame-pointer -march=${BUILD_ARCH} -mthumb"/>
+					<stringMacro name="RM_macosx" type="VALUE_TEXT" value="rm -rf"/>
+					<stringMacro name="TOOLSPATH_macosx" type="VALUE_TEXT" value="/Applications/StratifyLabs-SDK/Tools/gcc"/>
+					<stringMacro name="BUILD_DEVICE" type="VALUE_TEXT" value="lpc17xx"/>
+					<stringMacro name="BUILD_NAME" type="VALUE_TEXT" value="CoActionHero"/>
+					<stringMacro name="RM_win32" type="VALUE_TEXT" value="../script/clean.bat"/>
 					<stringMacro name="BUILD_TYPE" type="VALUE_TEXT" value="_debug"/>
 					<stringMacro name="TOOLSPATH_win64" type="VALUE_TEXT" value="${TOOLSPATH_win32}"/>
 					<stringMacro name="DEVICE" type="VALUE_TEXT" value="lpc1759"/>
-					<stringMacro name="RM_win64" type="VALUE_TEXT" value="${RM_win32}"/>
-					<stringMacro name="TOOLSPATH_linux" type="VALUE_TEXT" value="${TOOLSPATH_macosx}"/>
-					<stringMacro name="RM_linux" type="VALUE_TEXT" value="${RM_macosx}"/>
-					<stringMacro name="C_FLAGS" type="VALUE_TEXT" value="-fmessage-length=0 -fomit-frame-pointer -march=${BUILD_ARCH} -mthumb"/>
+					<stringMacro name="HARDWARE_ID" type="VALUE_TEXT" value="0x00000001"/>
+					<stringMacro name="POSTPROCESS" type="VALUE_TEXT" value="${POSTPROCESS_${OsType}}"/>
 					<stringMacro name="POSTPROCESS_win32" type="VALUE_TEXT" value="${TOOLSPATH}/${HOST}/lib/ldscripts/kernel-post-process.bat"/>
-					<stringMacro name="RM_macosx" type="VALUE_TEXT" value="rm -rf"/>
-					<stringMacro name="TOOLSPATH_macosx" type="VALUE_TEXT" value="/Applications/StratifyLabs-SDK/Tools/gcc"/>
-					<stringMacro name="RM" type="VALUE_TEXT" value="${RM_${OsType}}"/>
-					<stringMacro name="BUILD_FLOAT" type="VALUE_TEXT" value="."/>
-					<stringMacro name="BUILD_NAME" type="VALUE_TEXT" value="CoActionHero"/>
 					<stringMacro name="BUILD_ARCH" type="VALUE_TEXT" value="armv7-m"/>
 				</macros>
 				<externalSettings/>
 				<extensions>
-					<extension id="org.eclipse.cdt.core.ELF" point="org.eclipse.cdt.core.BinaryParser"/>
 					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 					<extension id="org.eclipse.cdt.core.GASErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 					<extension id="org.eclipse.cdt.core.GLDErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.ELF" point="org.eclipse.cdt.core.BinaryParser"/>
 				</extensions>
 			</storageModule>
 			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-				<configuration artifactExtension="elf" artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.exe,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug" cleanCommand="${RM}" description="" id="cdt.managedbuild.config.gnu.cross.exe.debug.262901993.2064609313.609039573" name="build_debug_boot" parent="cdt.managedbuild.config.gnu.cross.exe.debug" postannouncebuildStep="" postbuildStep="${POSTPROCESS} ${TOOLSPATH} ${HOST} ${ProjName} ${BUILD_NAME} ${BUILD_ARCH} ${BUILD_FLOAT} ${BUILD_TYPE}" preannouncebuildStep="">
+				<configuration artifactExtension="elf" artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe" buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.exe" cleanCommand="${RM}" description="" id="cdt.managedbuild.config.gnu.cross.exe.debug.262901993.2064609313.609039573" name="build_debug_boot" parent="cdt.managedbuild.config.gnu.cross.exe.debug" postannouncebuildStep="" postbuildStep="${POSTPROCESS} ${TOOLSPATH} ${HOST} ${ProjName} ${BUILD_NAME} ${BUILD_ARCH} ${BUILD_FLOAT} ${BUILD_TYPE}" preannouncebuildStep="">
 					<folderInfo id="cdt.managedbuild.config.gnu.cross.exe.debug.262901993.2064609313.609039573." name="/" resourcePath="">
 						<toolChain id="cdt.managedbuild.toolchain.gnu.cross.exe.debug.787119663" name="Cross GCC" nonInternalBuilderId="cdt.managedbuild.builder.gnu.cross" superClass="cdt.managedbuild.toolchain.gnu.cross.exe.debug">
 							<option id="cdt.managedbuild.option.gnu.cross.prefix.1022202325" name="Prefix" superClass="cdt.managedbuild.option.gnu.cross.prefix" value="${HOST}-" valueType="string"/>
@@ -289,43 +289,43 @@
 		<cconfiguration id="cdt.managedbuild.config.gnu.cross.exe.debug.262901993.2064609313.609039573.1707679591">
 			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="cdt.managedbuild.config.gnu.cross.exe.debug.262901993.2064609313.609039573.1707679591" moduleId="org.eclipse.cdt.core.settings" name="build_release_boot">
 				<macros>
-					<stringMacro name="TOOLSPATH" type="VALUE_TEXT" value="${TOOLSPATH_${OsType}}"/>
-					<stringMacro name="POSTPROCESS_macosx" type="VALUE_TEXT" value="sh ${TOOLSPATH}/${HOST}/lib/ldscripts/kernel-post-process.sh"/>
-					<stringMacro name="HOST" type="VALUE_TEXT" value="arm-none-eabi"/>
-					<stringMacro name="RM_win32" type="VALUE_TEXT" value="../script/clean.bat"/>
-					<stringMacro name="TOOLSPATH_win32" type="VALUE_TEXT" value="C:\StratifyLabs-SDK\Tools\gcc"/>
 					<stringMacro name="POSTPROCESS_win64" type="VALUE_TEXT" value="${POSTPROCESS_win32}"/>
-					<stringMacro name="START_ADDR" type="VALUE_TEXT" value="0"/>
-					<stringMacro name="HARDWARE_ID" type="VALUE_TEXT" value="0x00000001"/>
-					<stringMacro name="POSTPROCESS_linux" type="VALUE_TEXT" value="${POSTPROCESS_macosx}"/>
-					<stringMacro name="BUILD_DEVICE" type="VALUE_TEXT" value="lpc17xx"/>
-					<stringMacro name="POSTPROCESS" type="VALUE_TEXT" value="${POSTPROCESS_${OsType}}"/>
+					<stringMacro name="TOOLSPATH_linux" type="VALUE_TEXT" value="${TOOLSPATH_macosx}"/>
+					<stringMacro name="POSTPROCESS_macosx" type="VALUE_TEXT" value="sh ${TOOLSPATH}/${HOST}/lib/ldscripts/kernel-post-process.sh"/>
+					<stringMacro name="RM_linux" type="VALUE_TEXT" value="${RM_macosx}"/>
 					<stringMacro name="CC_VERSION" type="VALUE_TEXT" value="5.3.1"/>
+					<stringMacro name="POSTPROCESS_linux" type="VALUE_TEXT" value="${POSTPROCESS_macosx}"/>
+					<stringMacro name="TOOLSPATH" type="VALUE_TEXT" value="${TOOLSPATH_${OsType}}"/>
+					<stringMacro name="BUILD_FLOAT" type="VALUE_TEXT" value="."/>
+					<stringMacro name="RM" type="VALUE_TEXT" value="${RM_${OsType}}"/>
+					<stringMacro name="START_ADDR" type="VALUE_TEXT" value="0"/>
+					<stringMacro name="RM_win64" type="VALUE_TEXT" value="${RM_win32}"/>
+					<stringMacro name="HOST" type="VALUE_TEXT" value="arm-none-eabi"/>
+					<stringMacro name="TOOLSPATH_win32" type="VALUE_TEXT" value="C:\StratifyLabs-SDK\Tools\gcc"/>
+					<stringMacro name="C_FLAGS" type="VALUE_TEXT" value="-fmessage-length=0 -fomit-frame-pointer -march=${BUILD_ARCH} -mthumb"/>
+					<stringMacro name="RM_macosx" type="VALUE_TEXT" value="rm -rf"/>
+					<stringMacro name="TOOLSPATH_macosx" type="VALUE_TEXT" value="/Applications/StratifyLabs-SDK/Tools/gcc"/>
+					<stringMacro name="BUILD_DEVICE" type="VALUE_TEXT" value="lpc17xx"/>
+					<stringMacro name="BUILD_NAME" type="VALUE_TEXT" value="CoActionHero"/>
+					<stringMacro name="RM_win32" type="VALUE_TEXT" value="../script/clean.bat"/>
 					<stringMacro name="BUILD_TYPE" type="VALUE_TEXT" value=""/>
 					<stringMacro name="TOOLSPATH_win64" type="VALUE_TEXT" value="${TOOLSPATH_win32}"/>
 					<stringMacro name="DEVICE" type="VALUE_TEXT" value="lpc1759"/>
-					<stringMacro name="RM_win64" type="VALUE_TEXT" value="${RM_win32}"/>
-					<stringMacro name="TOOLSPATH_linux" type="VALUE_TEXT" value="${TOOLSPATH_macosx}"/>
-					<stringMacro name="RM_linux" type="VALUE_TEXT" value="${RM_macosx}"/>
-					<stringMacro name="C_FLAGS" type="VALUE_TEXT" value="-fmessage-length=0 -fomit-frame-pointer -march=${BUILD_ARCH} -mthumb"/>
+					<stringMacro name="HARDWARE_ID" type="VALUE_TEXT" value="0x00000001"/>
+					<stringMacro name="POSTPROCESS" type="VALUE_TEXT" value="${POSTPROCESS_${OsType}}"/>
 					<stringMacro name="POSTPROCESS_win32" type="VALUE_TEXT" value="${TOOLSPATH}/${HOST}/lib/ldscripts/kernel-post-process.bat"/>
-					<stringMacro name="RM_macosx" type="VALUE_TEXT" value="rm -rf"/>
-					<stringMacro name="TOOLSPATH_macosx" type="VALUE_TEXT" value="/Applications/StratifyLabs-SDK/Tools/gcc"/>
-					<stringMacro name="RM" type="VALUE_TEXT" value="${RM_${OsType}}"/>
-					<stringMacro name="BUILD_FLOAT" type="VALUE_TEXT" value="."/>
-					<stringMacro name="BUILD_NAME" type="VALUE_TEXT" value="CoActionHero"/>
 					<stringMacro name="BUILD_ARCH" type="VALUE_TEXT" value="armv7-m"/>
 				</macros>
 				<externalSettings/>
 				<extensions>
-					<extension id="org.eclipse.cdt.core.ELF" point="org.eclipse.cdt.core.BinaryParser"/>
 					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 					<extension id="org.eclipse.cdt.core.GASErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 					<extension id="org.eclipse.cdt.core.GLDErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.ELF" point="org.eclipse.cdt.core.BinaryParser"/>
 				</extensions>
 			</storageModule>
 			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-				<configuration artifactExtension="elf" artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.exe,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug" cleanCommand="${RM}" description="" id="cdt.managedbuild.config.gnu.cross.exe.debug.262901993.2064609313.609039573.1707679591" name="build_release_boot" parent="cdt.managedbuild.config.gnu.cross.exe.debug" postannouncebuildStep="" postbuildStep="${POSTPROCESS} ${TOOLSPATH} ${HOST} ${ProjName} ${BUILD_NAME} ${BUILD_ARCH} ${BUILD_FLOAT} ${BUILD_TYPE}" preannouncebuildStep="">
+				<configuration artifactExtension="elf" artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe" buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.exe" cleanCommand="${RM}" description="" id="cdt.managedbuild.config.gnu.cross.exe.debug.262901993.2064609313.609039573.1707679591" name="build_release_boot" parent="cdt.managedbuild.config.gnu.cross.exe.debug" postannouncebuildStep="" postbuildStep="${POSTPROCESS} ${TOOLSPATH} ${HOST} ${ProjName} ${BUILD_NAME} ${BUILD_ARCH} ${BUILD_FLOAT} ${BUILD_TYPE}" preannouncebuildStep="">
 					<folderInfo id="cdt.managedbuild.config.gnu.cross.exe.debug.262901993.2064609313.609039573.1707679591." name="/" resourcePath="">
 						<toolChain id="cdt.managedbuild.toolchain.gnu.cross.exe.debug.2018704796" name="Cross GCC" nonInternalBuilderId="cdt.managedbuild.builder.gnu.cross" superClass="cdt.managedbuild.toolchain.gnu.cross.exe.debug">
 							<option id="cdt.managedbuild.option.gnu.cross.prefix.72779556" name="Prefix" superClass="cdt.managedbuild.option.gnu.cross.prefix" value="${HOST}-" valueType="string"/>

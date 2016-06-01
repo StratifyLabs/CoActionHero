@@ -21,6 +21,7 @@ limitations under the License.
 #include <fcntl.h>
 #include <errno.h>
 #include <mcu/device.h>
+#include <mcu/debug.h>
 #include <iface/device_config.h>
 #include <device/microchip/sst25vf.h>
 #include <device/microchip/enc28j60.h>
@@ -33,6 +34,7 @@ limitations under the License.
 #include <stratify/sffs.h>
 #include <stratify/stratify.h>
 #include <device/sys.h>
+
 
 #include "link_transport.h"
 
@@ -60,7 +62,11 @@ void board_event_handler(int event, void * args){
 		mcu_core_invokebootloader(0, 0);
 		break;
 	case MCU_BOARD_CONFIG_EVENT_START_LINK:
+		mcu_debug("Start LED\n");
 		stratify_led_startup();
+		break;
+	case MCU_BOARD_CONFIG_EVENT_START_FILESYSTEM:
+		mcu_debug("Started %ld apps\n", *((u32*)args));
 		break;
 	}
 }
@@ -194,7 +200,7 @@ const device_t devices[] = {
 		DEVICE_PERIPH("usb0", mcu_usb, 0, 0666, USER_ROOT, GROUP_ROOT, S_IFCHR),
 
 		//user devices
-		SST25VF_DEVICE("disk0", 2, 0, 0, 16, 20000000, &sst25vf_cfg, &sst25vf_state, 0666, USER_ROOT, GROUP_ROOT),
+		SST25VF_DEVICE("disk0", 0, 0, 0, 16, 20000000, &sst25vf_cfg, &sst25vf_state, 0666, USER_ROOT, GROUP_ROOT),
 
 		//FIFO buffers used for std in and std out
 #ifdef __STDIO_VCP
@@ -240,7 +246,7 @@ const fatfs_cfg_t fatfs_cfg = {
 const sysfs_t const sysfs_list[] = {
 		SYSFS_APP("/app", &(devices[MEM_DEV]), SYSFS_ALL_ACCESS), //the folder for ram/flash applications
 		SYSFS_DEV("/dev", devices, SYSFS_READONLY_ACCESS), //the list of devices
-		SFFS("/home", &sffs_cfg, SYSFS_ALL_ACCESS), //the list the CAFS lite fs
+		SFFS("/home", &sffs_cfg, SYSFS_ALL_ACCESS), //the stratify file system on external RAM
 		//FATFS("/home", &fatfs_cfg, SYSFS_ALL_ACCESS), //fat filesystem with external SD card
 		SYSFS_ROOT("/", sysfs_list, SYSFS_READONLY_ACCESS), //the root filesystem (must be last)
 		SYSFS_TERMINATOR
