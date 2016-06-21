@@ -1,0 +1,8 @@
+{
+    "IsKernelFormatHome": true,
+    "IsKernelInstallApps": true,
+    "IsKernelVerify": true,
+    "KernelBootSuffix": "_boot",
+    "KernelBuild": "build_release",
+    "KernelBuildPrefix": "build_"
+}
