@@ -23,17 +23,17 @@ limitations under the License.
 #include <mcu/device.h>
 #include <mcu/debug.h>
 #include <iface/device_config.h>
-#include <device/microchip/sst25vf.h>
-#include <device/microchip/enc28j60.h>
-#include <device/sys.h>
-#include <device/uartfifo.h>
-#include <device/usbfifo.h>
-#include <device/fifo.h>
+#include <dev/microchip/sst25vf.h>
+#include <dev/microchip/enc28j60.h>
+#include <dev/sys.h>
+#include <dev/uartfifo.h>
+#include <dev/usbfifo.h>
+#include <dev/fifo.h>
 #include <iface/link.h>
 #include <stratify/sysfs.h>
 #include <stratify/sffs.h>
 #include <stratify/stratify.h>
-#include <device/sys.h>
+#include <dev/sys.h>
 
 
 #include "link_transport.h"
@@ -87,14 +87,15 @@ const stratify_board_config_t stratify_board_config = {
 		.stdin_dev = "/dev/stdio-in" ,
 		.stdout_dev = "/dev/stdio-out",
 		.stderr_dev = "/dev/stdio-out",
-		.o_sys_flags = SYS_FLAGS_STDIO_FIFO,
+		.o_sys_flags = SYS_FLAGS_STDIO_FIFO | SYS_FLAGS_NOTIFY,
 #endif
 		.sys_name = "CoAction Hero",
 		.sys_version = "1.0.0",
 		.sys_memory_size = STFY_SYSTEM_MEMORY_SIZE,
 		.start = stratify_default_thread,
 		.start_args = &link_transport,
-		.start_stack_size = STRATIFY_DEFAULT_START_STACK_SIZE
+		.start_stack_size = STRATIFY_DEFAULT_START_STACK_SIZE,
+		.notify_write = stratify_link_transport_usb_notify
 };
 
 volatile sched_task_t stratify_sched_table[SCHED_TASK_TOTAL] MCU_SYS_MEM;
@@ -138,24 +139,25 @@ uartfifo_state_t uart3_fifo_state MCU_SYS_MEM;
 
 #define STDIO_BUFFER_SIZE 128
 
-#ifdef __STDIO_VCP
-char usb0_fifo_buffer_alt[STDIO_BUFFER_SIZE];
-const usbfifo_cfg_t usb0_fifo_cfg_alt = USBFIFO_DEVICE_CFG(0,
-		LINK_USBPHY_BULK_ENDPOINT_ALT,
-		LINK_USBPHY_BULK_ENDPOINT_SIZE,
-		usb0_fifo_buffer_alt,
-		STDIO_BUFFER_SIZE);
-usbfifo_state_t usb0_fifo_state_alt MCU_SYS_MEM;
-#else
 char stdio_out_buffer[STDIO_BUFFER_SIZE];
 char stdio_in_buffer[STDIO_BUFFER_SIZE];
-fifo_cfg_t stdio_out_cfg = { .buffer = stdio_out_buffer, .size = STDIO_BUFFER_SIZE };
-fifo_cfg_t stdio_in_cfg = { .buffer = stdio_in_buffer, .size = STDIO_BUFFER_SIZE };
+
+void stdio_out_notify_write(int nbyte){
+	link_notify_dev_t notify;
+	notify.id = LINK_NOTIFY_ID_DEVICE_WRITE;
+	strcpy(notify.name, "stdio-out");
+	notify.nbyte = nbyte;
+	if( stratify_board_config.notify_write ){
+		stratify_board_config.notify_write(&notify, sizeof(link_notify_dev_t));
+	}
+}
+
+fifo_cfg_t stdio_out_cfg = FIFO_DEVICE_CFG(stdio_out_buffer, STDIO_BUFFER_SIZE, 0, stdio_out_notify_write);
+fifo_cfg_t stdio_in_cfg = FIFO_DEVICE_CFG(stdio_in_buffer, STDIO_BUFFER_SIZE, 0, 0);
 fifo_state_t stdio_out_state = { .head = 0, .tail = 0, .rop = NULL, .rop_len = 0, .wop = NULL, .wop_len = 0 };
 fifo_state_t stdio_in_state = {
 		.head = 0, .tail = 0, .rop = NULL, .rop_len = 0, .wop = NULL, .wop_len = 0
 };
-#endif
 
 #define MEM_DEV 0
 
@@ -203,12 +205,8 @@ const device_t devices[] = {
 		SST25VF_DEVICE("disk0", 0, 0, 0, 16, 20000000, &sst25vf_cfg, &sst25vf_state, 0666, USER_ROOT, GROUP_ROOT),
 
 		//FIFO buffers used for std in and std out
-#ifdef __STDIO_VCP
-		USBFIFO_DEVICE("stdio", &usb0_fifo_cfg_alt, &usb0_fifo_state_alt, 0666, USER_ROOT, GROUP_ROOT),
-#else
 		FIFO_DEVICE("stdio-out", &stdio_out_cfg, &stdio_out_state, 0666, USER_ROOT, GROUP_ROOT),
 		FIFO_DEVICE("stdio-in", &stdio_in_cfg, &stdio_in_state, 0666, USER_ROOT, GROUP_ROOT),
-#endif
 
 		//system devices
 		USBFIFO_DEVICE("link-phy-usb", &stratify_link_transport_usb_fifo_cfg, &stratify_link_transport_usb_fifo_state, 0666, USER_ROOT, GROUP_ROOT),
