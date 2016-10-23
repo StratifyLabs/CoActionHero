@@ -78,17 +78,10 @@ const stratify_board_config_t stratify_board_config = {
 		.task_total = SCHED_TASK_TOTAL,
 		.clk_usec_mult = (uint32_t)(STFY_SYSTEM_CLOCK / 1000000),
 		.clk_nsec_div = (uint32_t)((uint64_t)1024 * 1000000000 / STFY_SYSTEM_CLOCK),
-#ifdef __STDIO_VCP
-		.stdin_dev = "/dev/stdio" ,
-		.stdout_dev = "/dev/stdio",
-		.stderr_dev = "/dev/stdio",
-		.sys_flags = SYS_FLAGS_STDIO_VCP,
-#else
 		.stdin_dev = "/dev/stdio-in" ,
 		.stdout_dev = "/dev/stdio-out",
 		.stderr_dev = "/dev/stdio-out",
 		.o_sys_flags = SYS_FLAGS_STDIO_FIFO | SYS_FLAGS_NOTIFY,
-#endif
 		.sys_name = "CoAction Hero",
 		.sys_version = "1.0.0",
 		.sys_memory_size = STFY_SYSTEM_MEMORY_SIZE,
