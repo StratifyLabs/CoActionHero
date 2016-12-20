@@ -210,10 +210,10 @@ const device_t devices[] = {
 
 extern const sffs_cfg_t sffs_cfg;
 sffs_state_t sffs_state;
-open_file_t cafs_open_file; // Cannot be in HWPL_SYS_MEM because it is accessed in unpriv mode
+open_file_t sffs_open_file; // Cannot be in HWPL_SYS_MEM because it is accessed in unpriv mode
 
 const sffs_cfg_t sffs_cfg = {
-		.open_file = &cafs_open_file,
+		.open_file = &sffs_open_file,
 		.devfs = &(sysfs_list[1]),
 		.name = "disk0",
 		.state = &sffs_state

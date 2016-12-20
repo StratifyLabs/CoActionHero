@@ -1,9 +1,18 @@
 {
-    "IsInstallKernelData": false,
-    "IsKernelFormatHome": false,
-    "IsKernelRunTests": false,
-    "IsKernelVerify": false,
-    "KernelBootSuffix": "_boot",
-    "KernelBuild": "build_release",
-    "KernelBuildPrefix": "build_"
+    "LocalBuild": "build_release",
+    "LocalIsFormatHome": false,
+    "LocalIsInstallData": false,
+    "LocalIsRunTests": false,
+    "LocalIsVerify": true,
+    "LocalProjectId": "-KZKdR__jXiqEbnGClJb",
+    "bootsuffix": "_boot",
+    "buildprefix": "build_",
+    "description": "The CoAction Hero is a develompent board featuring the LPC1759 and 1MB flash filesystem.",
+    "github": "https://github.com/StratifyLabs/CoActionHero",
+    "hardwareid": "0x00000001",
+    "name": "CoActionHero",
+    "publisher": "Stratify Labs, Inc",
+    "tags": "nxp,lpc,lpc17xx,lpc1759,arm,cortex-m3",
+    "type": "StratifyKernel",
+    "version": "1.0"
 }
