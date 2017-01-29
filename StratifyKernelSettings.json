@@ -3,7 +3,7 @@
     "LocalIsFormatHome": false,
     "LocalIsInstallData": false,
     "LocalIsRunTests": false,
-    "LocalIsVerify": true,
+    "LocalIsVerify": false,
     "LocalProjectId": "-KZKdR__jXiqEbnGClJb",
     "bootsuffix": "_boot",
     "buildprefix": "build_",
