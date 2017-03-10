@@ -11,8 +11,9 @@
     "github": "https://github.com/StratifyLabs/CoActionHero",
     "hardwareid": "0x00000001",
     "name": "CoActionHero",
+    "permissions": "public",
     "publisher": "Stratify Labs, Inc",
     "tags": "nxp,lpc,lpc17xx,lpc1759,arm,cortex-m3",
     "type": "StratifyKernel",
-    "version": "1.0"
+    "version": "1.1"
 }
