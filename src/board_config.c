@@ -24,7 +24,6 @@ limitations under the License.
 #include <mcu/debug.h>
 #include <iface/device_config.h>
 #include <dev/microchip/sst25vf.h>
-#include <dev/microchip/enc28j60.h>
 #include <dev/sys.h>
 #include <dev/uartfifo.h>
 #include <dev/usbfifo.h>
