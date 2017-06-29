@@ -14,7 +14,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-*/
+ */
 
 #include <stdint.h>
 #include <sys/lock.h>
@@ -80,14 +80,27 @@ const stratify_board_config_t stratify_board_config = {
 		.stdin_dev = "/dev/stdio-in" ,
 		.stdout_dev = "/dev/stdio-out",
 		.stderr_dev = "/dev/stdio-out",
+#if defined SINGLE_VCP
+		.o_sys_flags = SYS_FLAGS_STDIO_FIFO,
+#else
 		.o_sys_flags = SYS_FLAGS_STDIO_FIFO | SYS_FLAGS_NOTIFY,
+#endif
 		.sys_name = "CoAction Hero",
-		.sys_version = "1.1",
+		.sys_version = "1.3",
+#if STRATIFY_VERSION >= STRATIFY_VERSION_2_2_0
+		.sys_id = "-KZKdR__jXiqEbnGClJb",
+#endif
 		.sys_memory_size = STFY_SYSTEM_MEMORY_SIZE,
 		.start = stratify_default_thread,
 		.start_args = &link_transport,
 		.start_stack_size = STRATIFY_DEFAULT_START_STACK_SIZE,
-		.notify_write = stratify_link_transport_usb_notify
+#if defined SINGLE_VCP
+		.notify_write = 0,
+#else
+		.notify_write = stratify_link_transport_usb_notify,
+#endif
+		.socket_api = 0
+
 };
 
 volatile sched_task_t stratify_sched_table[SCHED_TASK_TOTAL] MCU_SYS_MEM;
@@ -108,7 +121,7 @@ sst25vf_state_t sst25vf_state MCU_SYS_MEM;
  */
 const sst25vf_cfg_t sst25vf_cfg = SST25VF_DEVICE_CFG(-1, 0, -1, 0, 0, 17, 1*1024*1024);
 
-#define UART0_DEVFIFO_BUFFER_SIZE 128
+#define UART0_DEVFIFO_BUFFER_SIZE 512
 char uart0_fifo_buffer[UART0_DEVFIFO_BUFFER_SIZE];
 const uartfifo_cfg_t uart0_fifo_cfg = UARTFIFO_DEVICE_CFG(0,
 		uart0_fifo_buffer,
@@ -135,11 +148,11 @@ char stdio_out_buffer[STDIO_BUFFER_SIZE];
 char stdio_in_buffer[STDIO_BUFFER_SIZE];
 
 void stdio_out_notify_write(int nbyte){
-	link_notify_dev_t notify;
-	notify.id = LINK_NOTIFY_ID_DEVICE_WRITE;
-	strcpy(notify.name, "stdio-out");
-	notify.nbyte = nbyte;
 	if( stratify_board_config.notify_write ){
+		link_notify_dev_t notify;
+		notify.id = LINK_NOTIFY_ID_DEVICE_WRITE;
+		strcpy(notify.name, "stdio-out");
+		notify.nbyte = nbyte;
 		stratify_board_config.notify_write(&notify, sizeof(link_notify_dev_t));
 	}
 }
@@ -176,6 +189,7 @@ const device_t devices[] = {
 		DEVICE_PERIPH("i2c0", mcu_i2c, 0, 0666, USER_ROOT, GROUP_ROOT, S_IFCHR),
 		DEVICE_PERIPH("i2c1", mcu_i2c, 1, 0666, USER_ROOT, GROUP_ROOT, S_IFCHR),
 		DEVICE_PERIPH("i2c2", mcu_i2c, 2, 0666, USER_ROOT, GROUP_ROOT, S_IFCHR),
+		DEVICE_PERIPH("i2s0", mcu_i2s, 0, 0666, USER_ROOT, GROUP_ROOT, S_IFCHR),
 		DEVICE_PERIPH("pwm1", mcu_pwm, 1, 0666, USER_ROOT, GROUP_ROOT, S_IFBLK),
 		DEVICE_PERIPH("qei0", mcu_qei, 0, 0666, USER_ROOT, GROUP_ROOT, S_IFCHR),
 		DEVICE_PERIPH("rtc", mcu_rtc, 0, 0666, USER_ROOT, GROUP_ROOT, S_IFCHR),

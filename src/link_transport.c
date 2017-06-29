@@ -44,7 +44,11 @@ link_transport_phy_t link_transport_open(const char * name, int baudrate){
 	attr.mode = PIO_MODE_OUTPUT | PIO_MODE_DIRONLY;
 	ioctl(fd_pio, I_PIO_SETATTR, &attr);
 	memset(&m_usb_context, 0, sizeof(m_usb_context));
+#if defined SINGLE_VCP
+	m_usb_context.constants = &stratify_link_boot_transport_usb_constants;
+#else
 	m_usb_context.constants = &stratify_link_transport_usb_constants;
+#endif
 	fd = stratify_link_transport_usb_open(name, &m_usb_context);
 
 	ioctl(fd_pio, I_PIO_SETMASK, (void*)attr.mask);
