@@ -1,1 +1,5 @@
-build_*
+*.a
+*.o
+*.d
+*.map
+./build_*CoActionHero*
