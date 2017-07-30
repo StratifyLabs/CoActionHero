@@ -40,7 +40,7 @@ clean:
 	-@echo ' '
 
 post-build:
-	-sh /Applications/StratifyLabs-SDK/Tools/gcc/arm-none-eabi/lib/ldscripts/kernel-post-process.sh /Applications/StratifyLabs-SDK/Tools/gcc arm-none-eabi CoActionHero mbedLPC1768 armv7-m . _debug
+	-sh /Applications/StratifyLabs-SDK/Tools/gcc/arm-none-eabi/lib/ldscripts/kernel-post-process.sh /Applications/StratifyLabs-SDK/Tools/gcc arm-none-eabi CoActionHero CoActionHero armv7-m . _debug
 	-@echo ' '
 
 .PHONY: all clean dependents post-build

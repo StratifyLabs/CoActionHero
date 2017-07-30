@@ -20,7 +20,7 @@ C_DEPS += \
 boot/%.o: ../boot/%.c
 	@echo 'Building file: $<'
 	@echo 'Invoking: Cross GCC Compiler'
-	arm-none-eabi-gcc -DHARDWARE_ID=0x00000003 -D__StratifyOS__ -D__lpc17xx -D___debug -Os -Wall -c -fmessage-length=0 -fomit-frame-pointer -march=armv7-m -mthumb -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@)" -o "$@" "$<"
+	arm-none-eabi-gcc -DHARDWARE_ID=0x00000001 -D__StratifyOS__ -D__lpc17xx -D___debug -Os -Wall -c -fmessage-length=0 -fomit-frame-pointer -march=armv7-m -mthumb -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@)" -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 

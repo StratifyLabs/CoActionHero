@@ -2,4 +2,6 @@
 *.o
 *.d
 *.map
+*.s
+*.bin
 ./build_*CoActionHero*

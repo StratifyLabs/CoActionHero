@@ -41,8 +41,8 @@ limitations under the License.
 #define SOS_BOARD_MEMORY_SIZE (8192*2)
 #define SOS_BOARD_TASK_TOTAL 10
 
-
 static void board_event_handler(int event, void * args);
+
 
 const mcu_board_config_t mcu_board_config = {
 		.core_osc_freq = 12000000,
@@ -84,8 +84,6 @@ void board_event_handler(int event, void * args){
 	}
 }
 
-
-
 const sos_board_config_t sos_board_config = {
 		.clk_usecond_tmr = 3,
 		.task_total = SOS_BOARD_TASK_TOTAL,
@@ -120,14 +118,20 @@ sst25vf_state_t sst25vf_state MCU_SYS_MEM;
 
 //const sst25vf_cfg_t sst25vf_cfg = SST25VF_DEVICE_CFG(0, 16, -1, 0, -1, 0, 0, 17, 1*1024*1024, 20000000);
 const sst25vf_config_t sst25vf_cfg = {
-		.cs  = {.port = 0, .pin = 6 },
-		.hold  = {.port = 0, .pin = 6 },
-		.wp  = {.port = 0, .pin = 6 },
-		.miso  = {.port = 0, .pin = 6 },
-		.attr = {
-				.o_flags = SPI_FLAG_SET_MASTER | SPI_FLAG_MODE0,
+		.spi.attr = {
+				.o_flags = SPI_FLAG_SET_MASTER | SPI_FLAG_IS_MODE0 | SPI_FLAG_IS_FORMAT_SPI,
 				.freq = 20000000,
+				.width = 8,
+				.pin_assignment = {
+						.miso = {0, 17},
+						.mosi = {0, 18},
+						.sck = {0, 15},
+						.cs = {0xff,0xff}
+				}
 		},
+		.cs  = {0, 16},
+		.hold  = {0xff, 0xff},
+		.wp  = {0xff, 0xff},
 		.size = 1*1024*1024
 };
 
@@ -153,7 +157,6 @@ const uartfifo_config_t uart3_fifo_cfg = {
 };
 uartfifo_state_t uart3_fifo_state MCU_SYS_MEM;
 
-
 #define STDIO_BUFFER_SIZE 128
 
 char stdio_out_buffer[STDIO_BUFFER_SIZE];
@@ -171,7 +174,7 @@ fifo_state_t stdio_in_state = { .head = 0, .tail = 0, .rop = NULL, .rop_len = 0,
  * automatically.  By default, the peripheral devices for the MCU are available
  * plus the devices on the microcomputer.
  */
-const devfs_device_t devices[] = {
+const devfs_device_t devfs_list[] = {
 		//mcu peripherals
 		DEVFS_DEVICE("mem0", mcu_mem, 0, 0, 0, 0666, USER_ROOT, S_IFBLK),
 		DEVFS_DEVICE("core", mcu_core, 0, 0, 0, 0666, USER_ROOT, S_IFCHR),
@@ -209,7 +212,7 @@ const devfs_device_t devices[] = {
 		DEVFS_DEVICE("usb0", mcu_usb, 0, 0, 0, 0666, USER_ROOT, S_IFCHR),
 
 		//user devices
-		DEVFS_DEVICE("disk0", sst25vf, 0, &sst25vf_cfg, &sst25vf_state, 0666, USER_ROOT, S_IFBLK),
+		DEVFS_DEVICE("drive0", sst25vf, 0, &sst25vf_cfg, &sst25vf_state, 0666, USER_ROOT, S_IFBLK),
 
 		//FIFO buffers used for std in and std out
 		DEVFS_DEVICE("stdio-out", fifo, 0, &stdio_out_cfg, &stdio_out_state, 0666, USER_ROOT, S_IFCHR),
@@ -230,7 +233,7 @@ open_file_t sffs_open_file; // Cannot be in MCU_SYS_MEM because it is accessed i
 const sffs_config_t sffs_cfg = {
 		.open_file = &sffs_open_file,
 		.devfs = &(sysfs_list[1]),
-		.name = "disk0",
+		.name = "drive0",
 		.state = &sffs_state
 };
 /*
@@ -241,7 +244,7 @@ open_file_t fatfs_open_file; // Cannot be in MCU_SYS_MEM because it is accessed 
 const fatfs_cfg_t fatfs_cfg = {
 		.open_file = &fatfs_open_file,
 		.devfs = &(sysfs_list[1]),
-		.name = "disk1",
+		.name = "drive0",
 		.state = &fatfs_state,
 		.vol_id = 0
 };
@@ -249,8 +252,8 @@ const fatfs_cfg_t fatfs_cfg = {
 
 
 const sysfs_t const sysfs_list[] = {
-		APPFS_MOUNT("/app", &(devices[MEM_DEV]), SYSFS_ALL_ACCESS), //the folder for ram/flash applications
-		DEVFS_MOUNT("/dev", devices, SYSFS_READONLY_ACCESS), //the list of devices
+		APPFS_MOUNT("/app", &(devfs_list[MEM_DEV]), SYSFS_ALL_ACCESS), //the folder for ram/flash applications
+		DEVFS_MOUNT("/dev", devfs_list, SYSFS_READONLY_ACCESS), //the list of devices
 		SFFS_MOUNT("/home", &sffs_cfg, SYSFS_ALL_ACCESS), //the stratify file system on external RAM
 		//FATFS("/home", &fatfs_cfg, SYSFS_ALL_ACCESS), //fat filesystem with external SD card
 		SYSFS_MOUNT("/", sysfs_list, SYSFS_READONLY_ACCESS), //the root filesystem (must be last)
