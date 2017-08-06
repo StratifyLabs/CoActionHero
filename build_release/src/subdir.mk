@@ -5,16 +5,19 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
 ../src/board_config.c \
+../src/board_trace.c \
 ../src/link_transport.c \
 ../src/stratify_symbols.c 
 
 OBJS += \
 ./src/board_config.o \
+./src/board_trace.o \
 ./src/link_transport.o \
 ./src/stratify_symbols.o 
 
 C_DEPS += \
 ./src/board_config.d \
+./src/board_trace.d \
 ./src/link_transport.d \
 ./src/stratify_symbols.d 
 

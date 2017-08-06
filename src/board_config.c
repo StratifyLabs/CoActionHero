@@ -1,6 +1,6 @@
 /*
 
-Copyright 2011-2016 Tyler Gilbert
+Copyright 2011-2017 Tyler Gilbert
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -27,6 +27,7 @@ limitations under the License.
 #include <device/uartfifo.h>
 #include <device/usbfifo.h>
 #include <device/fifo.h>
+#include <device/ffifo.h>
 #include <device/sys.h>
 #include <sos/link.h>
 #include <sos/fs/sysfs.h>
@@ -35,6 +36,7 @@ limitations under the License.
 #include <sos/fs/sffs.h>
 #include <sos/sos.h>
 
+#include "board_trace.h"
 #include "link_transport.h"
 
 #define SOS_BOARD_CLOCK 120000000
@@ -90,15 +92,19 @@ const sos_board_config_t sos_board_config = {
 		.stdin_dev = "/dev/stdio-in" ,
 		.stdout_dev = "/dev/stdio-out",
 		.stderr_dev = "/dev/stdio-out",
-		.o_sys_flags = SYS_FLAGS_STDIO_FIFO,
+		.trace_dev = 0,
+		.o_sys_flags = SYS_FLAG_IS_STDIO_FIFO | SYS_FLAG_IS_TRACE,
 		.sys_name = "CoAction Hero",
-		.sys_version = "1.3",
+		.sys_version = "1.5.0",
 		.sys_id = "-KZKdR__jXiqEbnGClJb",
 		.sys_memory_size = SOS_BOARD_MEMORY_SIZE,
 		.start = sos_default_thread,
 		.start_args = &link_transport,
 		.start_stack_size = SOS_DEFAULT_START_STACK_SIZE,
-		.socket_api = 0
+		.socket_api = 0,
+		.request = 0,
+		.trace_dev = "/dev/trace",
+		.trace_event = board_trace_event
 };
 
 volatile sched_task_t sos_sched_table[SOS_BOARD_TASK_TOTAL] MCU_SYS_MEM;
@@ -114,9 +120,6 @@ sst25vf_state_t sst25vf_state MCU_SYS_MEM;
 /* This is the configuration specific structure for the sst25vf
  * flash IC driver.
  */
-//const sst25vf_cfg_t sst25vf_cfg = SST25VF_DEVICE_CFG(0, 6, -1, 0, -1, 0, 0, 8, 2*1024*1024, 10000000);
-
-//const sst25vf_cfg_t sst25vf_cfg = SST25VF_DEVICE_CFG(0, 16, -1, 0, -1, 0, 0, 17, 1*1024*1024, 20000000);
 const sst25vf_config_t sst25vf_cfg = {
 		.spi.attr = {
 				.o_flags = SPI_FLAG_SET_MASTER | SPI_FLAG_IS_MODE0 | SPI_FLAG_IS_FORMAT_SPI,
@@ -137,8 +140,18 @@ const sst25vf_config_t sst25vf_cfg = {
 
 #define UART0_DEVFIFO_BUFFER_SIZE 128
 char uart0_fifo_buffer[UART0_DEVFIFO_BUFFER_SIZE];
-
 const uartfifo_config_t uart0_fifo_cfg = {
+		.uart.attr = {
+				.o_flags = UART_FLAG_IS_PARITY_EVEN | UART_FLAG_IS_STOP1 | UART_FLAG_SET_CONTROL_LINE_STATE,
+				.width = 8,
+				.freq = 115200,
+				.pin_assignment = {
+						.tx = {0, 2},
+						.rx = {0, 3},
+						.rts = {0xff, 0xff},
+						.cts = {0xff, 0xff}
+				}
+		},
 		.fifo = { .size = UART0_DEVFIFO_BUFFER_SIZE, .buffer = uart0_fifo_buffer }
 };
 uartfifo_state_t uart0_fifo_state MCU_SYS_MEM;
@@ -146,6 +159,17 @@ uartfifo_state_t uart0_fifo_state MCU_SYS_MEM;
 #define UART1_DEVFIFO_BUFFER_SIZE 64
 char uart1_fifo_buffer[UART1_DEVFIFO_BUFFER_SIZE];
 const uartfifo_config_t uart1_fifo_cfg = {
+		.uart.attr = {
+				.o_flags = UART_FLAG_IS_PARITY_EVEN | UART_FLAG_IS_STOP1 | UART_FLAG_SET_CONTROL_LINE_STATE,
+				.width = 8,
+				.freq = 115200,
+				.pin_assignment = {
+						.tx = {2, 0},
+						.rx = {2, 1},
+						.rts = {0xff, 0xff},
+						.cts = {0xff, 0xff}
+				}
+		},
 		.fifo = { .size = UART1_DEVFIFO_BUFFER_SIZE, .buffer = uart1_fifo_buffer }
 };
 uartfifo_state_t uart1_fifo_state MCU_SYS_MEM;
@@ -153,6 +177,17 @@ uartfifo_state_t uart1_fifo_state MCU_SYS_MEM;
 #define UART3_DEVFIFO_BUFFER_SIZE 64
 char uart3_fifo_buffer[UART3_DEVFIFO_BUFFER_SIZE];
 const uartfifo_config_t uart3_fifo_cfg = {
+		.uart.attr = {
+				.o_flags = UART_FLAG_IS_PARITY_EVEN | UART_FLAG_IS_STOP1 | UART_FLAG_SET_CONTROL_LINE_STATE,
+				.width = 8,
+				.freq = 115200,
+				.pin_assignment = {
+						.tx = {0, 0},
+						.rx = {0, 1},
+						.rts = {0xff, 0xff},
+						.cts = {0xff, 0xff}
+				}
+		},
 		.fifo = { .size = UART3_DEVFIFO_BUFFER_SIZE, .buffer = uart3_fifo_buffer }
 };
 uartfifo_state_t uart3_fifo_state MCU_SYS_MEM;
@@ -167,16 +202,13 @@ fifo_config_t stdio_out_cfg = { .buffer = stdio_out_buffer, .size = STDIO_BUFFER
 fifo_state_t stdio_out_state = { .head = 0, .tail = 0, .rop = NULL, .rop_len = 0, .wop = NULL, .wop_len = 0 };
 fifo_state_t stdio_in_state = { .head = 0, .tail = 0, .rop = NULL, .rop_len = 0, .wop = NULL, .wop_len = 0 };
 
-
-#define MEM_DEV 0
-
 /* This is the list of devices that will show up in the /dev folder
  * automatically.  By default, the peripheral devices for the MCU are available
  * plus the devices on the microcomputer.
  */
 const devfs_device_t devfs_list[] = {
 		//mcu peripherals
-		DEVFS_DEVICE("mem0", mcu_mem, 0, 0, 0, 0666, USER_ROOT, S_IFBLK),
+		DEVFS_DEVICE("trace", ffifo, 0, &trace_config, &trace_state, 0666, USER_ROOT, S_IFCHR),
 		DEVFS_DEVICE("core", mcu_core, 0, 0, 0, 0666, USER_ROOT, S_IFCHR),
 		DEVFS_DEVICE("core0", mcu_core, 0, 0, 0, 0666, USER_ROOT, S_IFCHR),
 		DEVFS_DEVICE("adc0", mcu_adc, 0, 0, 0, 0666, USER_ROOT, S_IFCHR),
@@ -212,7 +244,7 @@ const devfs_device_t devfs_list[] = {
 		DEVFS_DEVICE("usb0", mcu_usb, 0, 0, 0, 0666, USER_ROOT, S_IFCHR),
 
 		//user devices
-		DEVFS_DEVICE("drive0", sst25vf, 0, &sst25vf_cfg, &sst25vf_state, 0666, USER_ROOT, S_IFBLK),
+		DEVFS_DEVICE("drive0", sst25vf_ssp, 0, &sst25vf_cfg, &sst25vf_state, 0666, USER_ROOT, S_IFBLK),
 
 		//FIFO buffers used for std in and std out
 		DEVFS_DEVICE("stdio-out", fifo, 0, &stdio_out_cfg, &stdio_out_state, 0666, USER_ROOT, S_IFCHR),
@@ -236,7 +268,8 @@ const sffs_config_t sffs_cfg = {
 		.name = "drive0",
 		.state = &sffs_state
 };
-/*
+
+#if 0
 
 fatfs_state_t fatfs_state;
 open_file_t fatfs_open_file; // Cannot be in MCU_SYS_MEM because it is accessed in unpriv mode
@@ -248,11 +281,14 @@ const fatfs_cfg_t fatfs_cfg = {
 		.state = &fatfs_state,
 		.vol_id = 0
 };
- */
+#endif
+
+
+const devfs_device_t mem_device = DEVFS_DEVICE("mem0", mcu_mem, 0, 0, 0, 0666, USER_ROOT, S_IFBLK);
 
 
 const sysfs_t const sysfs_list[] = {
-		APPFS_MOUNT("/app", &(devfs_list[MEM_DEV]), SYSFS_ALL_ACCESS), //the folder for ram/flash applications
+		APPFS_MOUNT("/app", &mem_device, SYSFS_ALL_ACCESS), //the folder for ram/flash applications
 		DEVFS_MOUNT("/dev", devfs_list, SYSFS_READONLY_ACCESS), //the list of devices
 		SFFS_MOUNT("/home", &sffs_cfg, SYSFS_ALL_ACCESS), //the stratify file system on external RAM
 		//FATFS("/home", &fatfs_cfg, SYSFS_ALL_ACCESS), //fat filesystem with external SD card

@@ -1,5 +1,5 @@
 {
-    "LocalBuild": "build_debug",
+    "LocalBuild": "build_release",
     "LocalIsFormatHome": false,
     "LocalIsInstallData": false,
     "LocalIsRunTests": false,
@@ -21,5 +21,5 @@
     "publisher": "Stratify Labs, Inc",
     "tags": "nxp,lpc,lpc17xx,lpc1759,arm,cortex-m3",
     "type": "StratifyKernel",
-    "version": "1.4"
+    "version": "1.5"
 }
