@@ -16,6 +16,8 @@ limitations under the License.
 
  */
 
+
+
 #include <sys/lock.h>
 #include <fcntl.h>
 #include <errno.h>
@@ -72,7 +74,7 @@ const mcu_board_config_t mcu_board_config = {
 
 void board_event_handler(int event, void * args){
 	switch(event){
-	case MCU_BOARD_CONFIG_EVENT_PRIV_FATAL:
+	case MCU_BOARD_CONFIG_EVENT_ROOT_FATAL:
 		//start the bootloader on a fatal event
 		mcu_core_invokebootloader(0, 0);
 		break;
@@ -174,6 +176,54 @@ const uartfifo_config_t uart1_fifo_cfg = {
 };
 uartfifo_state_t uart1_fifo_state MCU_SYS_MEM;
 
+const i2c_config_t i2c1_config = {
+		.attr = {
+				.o_flags = I2C_FLAG_SET_MASTER,
+				.freq = 100000,
+				.pin_assignment = {
+						.sda = {0, 0},
+						.scl = {0, 1}
+				}
+		}
+};
+
+const i2c_config_t i2c2_config = {
+		.attr = {
+				.o_flags = I2C_FLAG_SET_MASTER,
+				.freq = 100000,
+				.pin_assignment = {
+						.sda = {0, 10},
+						.scl = {0, 11}
+				}
+		}
+};
+
+const dac_config_t adc0_config = {
+		.attr = {
+				.o_flags = ADC_FLAG_SET_CONVERTER,
+				.freq = 0,
+				.pin_assignment = {
+						.channel[0] = {0, 25},
+						.channel[1] = {1, 31},
+						.channel[2] = {0xff, 0xff},
+						.channel[3] = {0xff, 0xff}
+				}
+		}
+};
+
+const dac_config_t dac0_config = {
+		.attr = {
+				.o_flags = DAC_FLAG_SET_CONVERTER,
+				.freq = 0,
+				.pin_assignment = {
+						.channel[0] = {0, 26},
+						.channel[1] = {0xff, 0xff},
+						.channel[2] = {0xff, 0xff},
+						.channel[3] = {0xff, 0xff}
+				}
+		}
+};
+
 #define UART3_DEVFIFO_BUFFER_SIZE 64
 char uart3_fifo_buffer[UART3_DEVFIFO_BUFFER_SIZE];
 const uartfifo_config_t uart3_fifo_cfg = {
@@ -211,8 +261,8 @@ const devfs_device_t devfs_list[] = {
 		DEVFS_DEVICE("trace", ffifo, 0, &trace_config, &trace_state, 0666, USER_ROOT, S_IFCHR),
 		DEVFS_DEVICE("core", mcu_core, 0, 0, 0, 0666, USER_ROOT, S_IFCHR),
 		DEVFS_DEVICE("core0", mcu_core, 0, 0, 0, 0666, USER_ROOT, S_IFCHR),
-		DEVFS_DEVICE("adc0", mcu_adc, 0, 0, 0, 0666, USER_ROOT, S_IFCHR),
-		DEVFS_DEVICE("dac0", mcu_dac, 0, 0, 0, 0666, USER_ROOT, S_IFCHR),
+		DEVFS_DEVICE("adc0", mcu_adc, 0, &adc0_config, 0, 0666, USER_ROOT, S_IFCHR),
+		DEVFS_DEVICE("dac0", mcu_dac_dma, 0, &dac0_config, 0, 0666, USER_ROOT, S_IFCHR),
 		DEVFS_DEVICE("eint0", mcu_eint, 0, 0, 0, 0666, USER_ROOT, S_IFCHR),
 		DEVFS_DEVICE("eint1", mcu_eint, 1, 0, 0, 0666, USER_ROOT, S_IFCHR),
 		DEVFS_DEVICE("eint2", mcu_eint, 2, 0, 0, 0666, USER_ROOT, S_IFCHR),
@@ -223,8 +273,8 @@ const devfs_device_t devfs_list[] = {
 		DEVFS_DEVICE("pio3", mcu_pio, 3, 0, 0, 0666, USER_ROOT, S_IFCHR),
 		DEVFS_DEVICE("pio4", mcu_pio, 4, 0, 0, 0666, USER_ROOT, S_IFCHR),
 		DEVFS_DEVICE("i2c0", mcu_i2c, 0, 0, 0, 0666, USER_ROOT, S_IFCHR),
-		DEVFS_DEVICE("i2c1", mcu_i2c, 1, 0, 0, 0666, USER_ROOT, S_IFCHR),
-		DEVFS_DEVICE("i2c2", mcu_i2c, 2, 0, 0, 0666, USER_ROOT, S_IFCHR),
+		DEVFS_DEVICE("i2c1", mcu_i2c, 1, &i2c1_config, 0, 0666, USER_ROOT, S_IFCHR),
+		DEVFS_DEVICE("i2c2", mcu_i2c, 2, &i2c2_config, 0, 0666, USER_ROOT, S_IFCHR),
 		DEVFS_DEVICE("i2s0", mcu_i2s, 0, 0, 0, 0666, USER_ROOT, S_IFCHR),
 		DEVFS_DEVICE("pwm1", mcu_pwm, 1, 0, 0, 0666, USER_ROOT, S_IFCHR),
 		DEVFS_DEVICE("qei0", mcu_qei, 0, 0, 0, 0666, USER_ROOT, S_IFCHR),
@@ -283,7 +333,6 @@ const fatfs_cfg_t fatfs_cfg = {
 };
 #endif
 
-
 const devfs_device_t mem_device = DEVFS_DEVICE("mem0", mcu_mem, 0, 0, 0, 0666, USER_ROOT, S_IFBLK);
 
 
@@ -295,7 +344,6 @@ const sysfs_t const sysfs_list[] = {
 		SYSFS_MOUNT("/", sysfs_list, SYSFS_READONLY_ACCESS), //the root filesystem (must be last)
 		SYSFS_TERMINATOR
 };
-
 
 
 
