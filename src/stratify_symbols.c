@@ -19,7 +19,7 @@ limitations under the License.
 #include <sos/symbols.h>
 
 #define SYMBOLS_IGNORE_DCOMPLEX 1
-#define SYMBOLS_IGNORE_SON 1
-#define SYMBOLS_IGNORE_SG 1
+#define SYMBOLS_IGNORE_SON 0
+#define SYMBOLS_IGNORE_SG 0
 
 #include <sos/symbols/table.h>

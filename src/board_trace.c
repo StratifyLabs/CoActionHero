@@ -17,6 +17,7 @@ limitations under the License.
 */
 
 #include <fcntl.h>
+#include <string.h>
 #include <cortexm/task.h>
 #include <sos/link/types.h>
 #include "board_trace.h"
@@ -25,12 +26,12 @@ limitations under the License.
 #define TRACE_FRAME_SIZE sizeof(link_trace_event_t)
 #define TRACE_BUFFER_SIZE (sizeof(link_trace_event_t)*TRACE_COUNT)
 char trace_buffer[TRACE_FRAME_SIZE*TRACE_COUNT];
-const ffifo_config_t trace_config = {
+const ffifo_config_t board_trace_config = {
 		.count = TRACE_COUNT,
 		.frame_size = sizeof(link_trace_event_t),
 		.buffer = trace_buffer
 };
-ffifo_state_t trace_state;
+ffifo_state_t board_trace_state;
 
 
 void board_trace_event(void * event){
@@ -44,7 +45,5 @@ void board_trace_event(void * event){
 	async.buf = event;
 	async.nbyte = header->size;
 	async.flags = O_RDWR;
-
-
 	trace_dev->driver.write(&(trace_dev->handle), &async);
 }

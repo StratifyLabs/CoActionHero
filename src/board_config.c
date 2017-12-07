@@ -17,7 +17,7 @@ limitations under the License.
  */
 
 
-
+#include <mcu/arch.h>
 #include <sys/lock.h>
 #include <fcntl.h>
 #include <errno.h>
@@ -30,6 +30,7 @@ limitations under the License.
 #include <device/usbfifo.h>
 #include <device/fifo.h>
 #include <device/ffifo.h>
+#include <device/mcfifo.h>
 #include <device/sys.h>
 #include <sos/link.h>
 #include <sos/fs/sysfs.h>
@@ -41,9 +42,10 @@ limitations under the License.
 #include "board_trace.h"
 #include "link_transport.h"
 
+
 #define SOS_BOARD_CLOCK 120000000
 #define SOS_BOARD_MEMORY_SIZE (8192*2)
-#define SOS_BOARD_TASK_TOTAL 10
+#define SOS_BOARD_TASK_TOTAL 6
 
 static void board_event_handler(int event, void * args);
 
@@ -94,10 +96,9 @@ const sos_board_config_t sos_board_config = {
 		.stdin_dev = "/dev/stdio-in" ,
 		.stdout_dev = "/dev/stdio-out",
 		.stderr_dev = "/dev/stdio-out",
-		.trace_dev = 0,
 		.o_sys_flags = SYS_FLAG_IS_STDIO_FIFO | SYS_FLAG_IS_TRACE,
 		.sys_name = "CoAction Hero",
-		.sys_version = "1.5.0",
+		.sys_version = "1.7",
 		.sys_id = "-KZKdR__jXiqEbnGClJb",
 		.sys_memory_size = SOS_BOARD_MEMORY_SIZE,
 		.start = sos_default_thread,
@@ -110,18 +111,11 @@ const sos_board_config_t sos_board_config = {
 };
 
 volatile sched_task_t sos_sched_table[SOS_BOARD_TASK_TOTAL] MCU_SYS_MEM;
-task_t sos_task_table[SOS_BOARD_TASK_TOTAL] MCU_SYS_MEM;
+volatile task_t sos_task_table[SOS_BOARD_TASK_TOTAL] MCU_SYS_MEM;
 
 #define USER_ROOT 0
 
-/* This is the state information for the sst25vf flash IC driver.
- *
- */
 sst25vf_state_t sst25vf_state MCU_SYS_MEM;
-
-/* This is the configuration specific structure for the sst25vf
- * flash IC driver.
- */
 const sst25vf_config_t sst25vf_cfg = {
 		.spi.attr = {
 				.o_flags = SPI_FLAG_SET_MASTER | SPI_FLAG_IS_MODE0 | SPI_FLAG_IS_FORMAT_SPI,
@@ -140,11 +134,11 @@ const sst25vf_config_t sst25vf_cfg = {
 		.size = 1*1024*1024
 };
 
-#define UART0_DEVFIFO_BUFFER_SIZE 128
+#define UART0_DEVFIFO_BUFFER_SIZE 1024
 char uart0_fifo_buffer[UART0_DEVFIFO_BUFFER_SIZE];
 const uartfifo_config_t uart0_fifo_cfg = {
 		.uart.attr = {
-				.o_flags = UART_FLAG_IS_PARITY_EVEN | UART_FLAG_IS_STOP1 | UART_FLAG_SET_CONTROL_LINE_STATE,
+				.o_flags = UART_FLAG_IS_PARITY_NONE | UART_FLAG_IS_STOP1 | UART_FLAG_SET_LINE_CODING,
 				.width = 8,
 				.freq = 115200,
 				.pin_assignment = {
@@ -162,7 +156,7 @@ uartfifo_state_t uart0_fifo_state MCU_SYS_MEM;
 char uart1_fifo_buffer[UART1_DEVFIFO_BUFFER_SIZE];
 const uartfifo_config_t uart1_fifo_cfg = {
 		.uart.attr = {
-				.o_flags = UART_FLAG_IS_PARITY_EVEN | UART_FLAG_IS_STOP1 | UART_FLAG_SET_CONTROL_LINE_STATE,
+				.o_flags = UART_FLAG_IS_PARITY_NONE | UART_FLAG_IS_STOP1 | UART_FLAG_SET_LINE_CODING,
 				.width = 8,
 				.freq = 115200,
 				.pin_assignment = {
@@ -228,7 +222,7 @@ const dac_config_t dac0_config = {
 char uart3_fifo_buffer[UART3_DEVFIFO_BUFFER_SIZE];
 const uartfifo_config_t uart3_fifo_cfg = {
 		.uart.attr = {
-				.o_flags = UART_FLAG_IS_PARITY_EVEN | UART_FLAG_IS_STOP1 | UART_FLAG_SET_CONTROL_LINE_STATE,
+				.o_flags = UART_FLAG_IS_PARITY_NONE | UART_FLAG_IS_STOP1 | UART_FLAG_SET_LINE_CODING,
 				.width = 8,
 				.freq = 115200,
 				.pin_assignment = {
@@ -252,13 +246,41 @@ fifo_config_t stdio_out_cfg = { .buffer = stdio_out_buffer, .size = STDIO_BUFFER
 fifo_state_t stdio_out_state = { .head = 0, .tail = 0, .rop = NULL, .rop_len = 0, .wop = NULL, .wop_len = 0 };
 fifo_state_t stdio_in_state = { .head = 0, .tail = 0, .rop = NULL, .rop_len = 0, .wop = NULL, .wop_len = 0 };
 
+#define STREAM_COUNT 6
+#define STREAM_SIZE 128
+#define STREAM_BUFFER_SIZE (STREAM_SIZE*STREAM_COUNT)
+static char stream_buffer[STREAM_COUNT][STREAM_SIZE];
+
+const fifo_config_t board_stream_config_fifo_array[STREAM_COUNT] = {
+		{ .size = STREAM_SIZE, .buffer = stream_buffer[0] },
+		{ .size = STREAM_SIZE, .buffer = stream_buffer[1] },
+		{ .size = STREAM_SIZE, .buffer = stream_buffer[2] },
+		{ .size = STREAM_SIZE, .buffer = stream_buffer[3] },
+		{ .size = STREAM_SIZE, .buffer = stream_buffer[4] },
+		{ .size = STREAM_SIZE, .buffer = stream_buffer[5] }
+};
+
+const mcfifo_config_t board_stream_config = {
+		.count = STREAM_COUNT,
+		.size = STREAM_SIZE,
+		.fifo_config_array = board_stream_config_fifo_array
+};
+
+fifo_state_t board_stream_state_fifo_array[STREAM_COUNT];
+mcfifo_state_t board_stream_state = {
+		.fifo_state_array = board_stream_state_fifo_array
+};
+
+
+
 /* This is the list of devices that will show up in the /dev folder
  * automatically.  By default, the peripheral devices for the MCU are available
  * plus the devices on the microcomputer.
  */
 const devfs_device_t devfs_list[] = {
 		//mcu peripherals
-		DEVFS_DEVICE("trace", ffifo, 0, &trace_config, &trace_state, 0666, USER_ROOT, S_IFCHR),
+		DEVFS_DEVICE("trace", ffifo, 0, &board_trace_config, &board_trace_state, 0666, USER_ROOT, S_IFCHR),
+		DEVFS_DEVICE("multistream", mcfifo, 0, &board_stream_config, &board_stream_state, 0666, USER_ROOT, S_IFCHR),
 		DEVFS_DEVICE("core", mcu_core, 0, 0, 0, 0666, USER_ROOT, S_IFCHR),
 		DEVFS_DEVICE("core0", mcu_core, 0, 0, 0, 0666, USER_ROOT, S_IFCHR),
 		DEVFS_DEVICE("adc0", mcu_adc, 0, &adc0_config, 0, 0666, USER_ROOT, S_IFCHR),
@@ -286,9 +308,7 @@ const devfs_device_t devfs_list[] = {
 		DEVFS_DEVICE("tmr1", mcu_tmr, 1, 0, 0, 0666, USER_ROOT, S_IFCHR),
 		DEVFS_DEVICE("tmr2", mcu_tmr, 2, 0, 0, 0666, USER_ROOT, S_IFCHR),
 		DEVFS_DEVICE("uart0", uartfifo, 0, &uart0_fifo_cfg, &uart0_fifo_state, 0666, USER_ROOT, S_IFCHR),
-		//DEVFS_DEVICE("uart0", mcu_uart, 0, 0, 0, 0666, USER_ROOT, S_IFCHR),
 		DEVFS_DEVICE("uart1", uartfifo, 1, &uart1_fifo_cfg, &uart1_fifo_state, 0666, USER_ROOT, S_IFCHR),
-		//DEVFS_DEVICE("uart1", mcu_uart, 1, 0, 0, 0666, USER_ROOT, S_IFCHR),
 		DEVFS_DEVICE("uart2", mcu_uart, 2, 0, 0, 0666, USER_ROOT, S_IFCHR),
 		DEVFS_DEVICE("uart3", uartfifo, 3, &uart3_fifo_cfg, &uart3_fifo_state, 0666, USER_ROOT, S_IFCHR),
 		DEVFS_DEVICE("usb0", mcu_usb, 0, 0, 0, 0666, USER_ROOT, S_IFCHR),
