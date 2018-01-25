@@ -1,0 +1,9 @@
+{
+    "LocalBuild": "build_release",
+    "LocalInstallPath": "/app/.install",
+    "LocalIsInstallAssets": false,
+    "LocalIsRam": false,
+    "LocalIsStartup": false,
+    "LocalIsVerify": false,
+    "LocalProjectId": "-L2TX7JCRiIq-lur2o7c"
+}

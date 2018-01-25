@@ -1,0 +1,21 @@
+{
+    "bootsuffix": "_boot",
+    "buildprefix": "build_",
+    "change": "Updated for new storage mechanism",
+    "changes": {
+        "-L2TX7E7k2aQ1X3yKgZj": {
+            "description": "Updated for new storage mechanism",
+            "version": "1.9"
+        }
+    },
+    "description": "The CoAction Hero is a development board featuring the LPC1759 and 1MB flash filesystem.",
+    "github": "https://github.com/StratifyLabs/CoActionHero",
+    "hardwareid": "0x00000001",
+    "name": "CoActionHero",
+    "permissions": "public",
+    "publisher": "Stratify Labs, Inc",
+    "tags": "nxp,lpc,lpc17xx,lpc1759,arm,cortex-m3",
+    "type": "StratifyKernel",
+    "uid": "QSW7bQHeDqhJEcZ0mxQ5SmEYUSL2",
+    "version": "1.9"
+}

@@ -4,4 +4,5 @@
 *.map
 *.s
 *.bin
-./build_*CoActionHero*
+./build_*
+cmake_*

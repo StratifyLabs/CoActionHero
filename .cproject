@@ -71,7 +71,7 @@
 								<option id="gnu.c.link.option.ldflags.1196670032" name="Linker flags" superClass="gnu.c.link.option.ldflags" useByScannerDiscovery="false" value="-Wl,-Map,fw.map,--gc,--defsym=mcu_core_hardware_id=${HARDWARE_ID} -Ttext=${START_ADDR} -Tldscripts/${DEVICE}-rom.ld -nostdlib -u symbols_table" valueType="string"/>
 								<option id="gnu.c.link.option.libs.1677234288" name="Libraries (-l)" superClass="gnu.c.link.option.libs" useByScannerDiscovery="false" valueType="libs">
 									<listOptionValue builtIn="false" value="sos_sys${BUILD_TYPE}"/>
-									<listOptionValue builtIn="false" value="son"/>
+									<listOptionValue builtIn="false" value="son_kernel"/>
 									<listOptionValue builtIn="false" value="sgfx_kernel_1bpp"/>
 									<listOptionValue builtIn="false" value="lwip_kernel"/>
 									<listOptionValue builtIn="false" value="sos_mcu_${BUILD_DEVICE}${BUILD_TYPE}"/>
@@ -125,7 +125,7 @@
 					<stringMacro name="RM_win64" type="VALUE_TEXT" value="${RM_win32}"/>
 					<stringMacro name="TOOLSPATH_linux" type="VALUE_TEXT" value="${TOOLSPATH_macosx}"/>
 					<stringMacro name="RM_linux" type="VALUE_TEXT" value="${RM_macosx}"/>
-					<stringMacro name="C_FLAGS" type="VALUE_TEXT" value="-fmessage-length=0 -fomit-frame-pointer -march=${BUILD_ARCH} -mthumb"/>
+					<stringMacro name="C_FLAGS" type="VALUE_TEXT" value="-ffunction-sections -fdata-sections -fmessage-length=0 -fomit-frame-pointer -march=${BUILD_ARCH} -mthumb"/>
 					<stringMacro name="POSTPROCESS_win32" type="VALUE_TEXT" value="${TOOLSPATH}/${HOST}/lib/ldscripts/kernel-post-process.bat"/>
 					<stringMacro name="RM_macosx" type="VALUE_TEXT" value="rm -rf"/>
 					<stringMacro name="TOOLSPATH_macosx" type="VALUE_TEXT" value="/Applications/StratifyLabs-SDK/Tools/gcc"/>
@@ -172,8 +172,8 @@
 								<option id="gnu.c.link.option.ldflags.763077613" name="Linker flags" superClass="gnu.c.link.option.ldflags" useByScannerDiscovery="false" value="-Wl,-Map,fw.map,--gc,--defsym=mcu_core_hardware_id=${HARDWARE_ID} -Ttext=${START_ADDR} -Tldscripts/${DEVICE}-rom.ld -nostdlib -u symbols_table" valueType="string"/>
 								<option id="gnu.c.link.option.libs.1717319848" name="Libraries (-l)" superClass="gnu.c.link.option.libs" useByScannerDiscovery="false" valueType="libs">
 									<listOptionValue builtIn="false" value="sos_sys${BUILD_TYPE}"/>
+									<listOptionValue builtIn="false" value="son_kernel"/>
 									<listOptionValue builtIn="false" value="sgfx_kernel_1bpp"/>
-									<listOptionValue builtIn="false" value="son"/>
 									<listOptionValue builtIn="false" value="sos_mcu_${BUILD_DEVICE}${BUILD_TYPE}"/>
 									<listOptionValue builtIn="false" value="m"/>
 									<listOptionValue builtIn="false" value="c"/>
@@ -225,7 +225,7 @@
 					<stringMacro name="RM_win64" type="VALUE_TEXT" value="${RM_win32}"/>
 					<stringMacro name="TOOLSPATH_linux" type="VALUE_TEXT" value="${TOOLSPATH_macosx}"/>
 					<stringMacro name="RM_linux" type="VALUE_TEXT" value="${RM_macosx}"/>
-					<stringMacro name="C_FLAGS" type="VALUE_TEXT" value="-fmessage-length=0 -fomit-frame-pointer -march=${BUILD_ARCH} -mthumb"/>
+					<stringMacro name="C_FLAGS" type="VALUE_TEXT" value="-ffunction-sections -fdata-sections -fmessage-length=0 -fomit-frame-pointer -march=${BUILD_ARCH} -mthumb"/>
 					<stringMacro name="POSTPROCESS_win32" type="VALUE_TEXT" value="${TOOLSPATH}/${HOST}/lib/ldscripts/kernel-post-process.bat"/>
 					<stringMacro name="RM_macosx" type="VALUE_TEXT" value="rm -rf"/>
 					<stringMacro name="TOOLSPATH_macosx" type="VALUE_TEXT" value="/Applications/StratifyLabs-SDK/Tools/gcc"/>
@@ -323,7 +323,7 @@
 					<stringMacro name="RM_win64" type="VALUE_TEXT" value="${RM_win32}"/>
 					<stringMacro name="TOOLSPATH_linux" type="VALUE_TEXT" value="${TOOLSPATH_macosx}"/>
 					<stringMacro name="RM_linux" type="VALUE_TEXT" value="${RM_macosx}"/>
-					<stringMacro name="C_FLAGS" type="VALUE_TEXT" value="-fmessage-length=0 -fomit-frame-pointer -march=${BUILD_ARCH} -mthumb"/>
+					<stringMacro name="C_FLAGS" type="VALUE_TEXT" value="-ffunction-sections -fdata-sections -fmessage-length=0 -fomit-frame-pointer -march=${BUILD_ARCH} -mthumb"/>
 					<stringMacro name="POSTPROCESS_win32" type="VALUE_TEXT" value="${TOOLSPATH}/${HOST}/lib/ldscripts/kernel-post-process.bat"/>
 					<stringMacro name="RM_macosx" type="VALUE_TEXT" value="rm -rf"/>
 					<stringMacro name="TOOLSPATH_macosx" type="VALUE_TEXT" value="/Applications/StratifyLabs-SDK/Tools/gcc"/>

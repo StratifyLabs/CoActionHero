@@ -16,7 +16,6 @@ limitations under the License.
 
  */
 
-
 #include <mcu/arch.h>
 #include <sys/lock.h>
 #include <fcntl.h>
@@ -30,7 +29,7 @@ limitations under the License.
 #include <device/usbfifo.h>
 #include <device/fifo.h>
 #include <device/ffifo.h>
-#include <device/mcfifo.h>
+#include <device/cfifo.h>
 #include <device/sys.h>
 #include <sos/link.h>
 #include <sos/fs/sysfs.h>
@@ -42,10 +41,9 @@ limitations under the License.
 #include "board_trace.h"
 #include "link_transport.h"
 
-
 #define SOS_BOARD_CLOCK 120000000
 #define SOS_BOARD_MEMORY_SIZE (8192*2)
-#define SOS_BOARD_TASK_TOTAL 6
+#define SOS_BOARD_TASK_TOTAL 8
 
 static void board_event_handler(int event, void * args);
 
@@ -70,7 +68,7 @@ const mcu_board_config_t mcu_board_config = {
 		},
 		.o_flags = 0,
 		.event_handler = board_event_handler,
-		.led.port = 2, .led.pin = 10
+		.led = {2,10}
 };
 
 
@@ -98,8 +96,8 @@ const sos_board_config_t sos_board_config = {
 		.stderr_dev = "/dev/stdio-out",
 		.o_sys_flags = SYS_FLAG_IS_STDIO_FIFO | SYS_FLAG_IS_TRACE,
 		.sys_name = "CoAction Hero",
-		.sys_version = "1.7",
-		.sys_id = "-KZKdR__jXiqEbnGClJb",
+		.sys_version = "1.9",
+		.sys_id = "-L2TX7JCRiIq-lur2o7c",
 		.sys_memory_size = SOS_BOARD_MEMORY_SIZE,
 		.start = sos_default_thread,
 		.start_args = &link_transport,
@@ -130,7 +128,7 @@ const sst25vf_config_t sst25vf_cfg = {
 		},
 		.cs  = {0, 16},
 		.hold  = {0xff, 0xff},
-		.wp  = {0xff, 0xff},
+		.wp  = {0xff,0xff},
 		.size = 1*1024*1024
 };
 
@@ -246,31 +244,26 @@ fifo_config_t stdio_out_cfg = { .buffer = stdio_out_buffer, .size = STDIO_BUFFER
 fifo_state_t stdio_out_state = { .head = 0, .tail = 0, .rop = NULL, .rop_len = 0, .wop = NULL, .wop_len = 0 };
 fifo_state_t stdio_in_state = { .head = 0, .tail = 0, .rop = NULL, .rop_len = 0, .wop = NULL, .wop_len = 0 };
 
-#define STREAM_COUNT 6
-#define STREAM_SIZE 128
-#define STREAM_BUFFER_SIZE (STREAM_SIZE*STREAM_COUNT)
-static char stream_buffer[STREAM_COUNT][STREAM_SIZE];
+#define CFIFO_COUNT 2
+#define CFIFO_SIZE 128
+#define CFIFO_BUFFER_SIZE (CFIFO_SIZE*CFIFO_COUNT)
+static char cfifo_buffer[CFIFO_COUNT][CFIFO_SIZE];
 
-const fifo_config_t board_stream_config_fifo_array[STREAM_COUNT] = {
-		{ .size = STREAM_SIZE, .buffer = stream_buffer[0] },
-		{ .size = STREAM_SIZE, .buffer = stream_buffer[1] },
-		{ .size = STREAM_SIZE, .buffer = stream_buffer[2] },
-		{ .size = STREAM_SIZE, .buffer = stream_buffer[3] },
-		{ .size = STREAM_SIZE, .buffer = stream_buffer[4] },
-		{ .size = STREAM_SIZE, .buffer = stream_buffer[5] }
+const fifo_config_t board_cfifo_config_fifo_array[CFIFO_COUNT] = {
+		{ .size = CFIFO_SIZE, .buffer = cfifo_buffer[0] },
+		{ .size = CFIFO_SIZE, .buffer = cfifo_buffer[1] }
 };
 
-const mcfifo_config_t board_stream_config = {
-		.count = STREAM_COUNT,
-		.size = STREAM_SIZE,
-		.fifo_config_array = board_stream_config_fifo_array
+const cfifo_config_t board_cfifo_config = {
+		.count = CFIFO_COUNT,
+		.size = CFIFO_SIZE,
+		.fifo_config_array = board_cfifo_config_fifo_array
 };
 
-fifo_state_t board_stream_state_fifo_array[STREAM_COUNT];
-mcfifo_state_t board_stream_state = {
-		.fifo_state_array = board_stream_state_fifo_array
+fifo_state_t board_cfifo_state_fifo_array[CFIFO_COUNT];
+cfifo_state_t board_cfifo_state = {
+		.fifo_state_array = board_cfifo_state_fifo_array
 };
-
 
 
 /* This is the list of devices that will show up in the /dev folder
@@ -280,7 +273,7 @@ mcfifo_state_t board_stream_state = {
 const devfs_device_t devfs_list[] = {
 		//mcu peripherals
 		DEVFS_DEVICE("trace", ffifo, 0, &board_trace_config, &board_trace_state, 0666, USER_ROOT, S_IFCHR),
-		DEVFS_DEVICE("multistream", mcfifo, 0, &board_stream_config, &board_stream_state, 0666, USER_ROOT, S_IFCHR),
+		DEVFS_DEVICE("fifo", cfifo, 0, &board_cfifo_config, &board_cfifo_state, 0666, USER_ROOT, S_IFCHR),
 		DEVFS_DEVICE("core", mcu_core, 0, 0, 0, 0666, USER_ROOT, S_IFCHR),
 		DEVFS_DEVICE("core0", mcu_core, 0, 0, 0, 0666, USER_ROOT, S_IFCHR),
 		DEVFS_DEVICE("adc0", mcu_adc, 0, &adc0_config, 0, 0666, USER_ROOT, S_IFCHR),

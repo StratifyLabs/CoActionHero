@@ -16,13 +16,18 @@ limitations under the License.
 
 */
 
-
+#include <sos/sos.h>
+#include <cortexm/task.h>
 #include <mcu/types.h>
 #include <mcu/core.h>
 #include <mcu/bootloader.h>
 
 #include "link_transport.h"
 #include "board_config.h"
+
+const struct __sFILE_fake __sf_fake_stdin;
+const struct __sFILE_fake __sf_fake_stdout;
+const struct __sFILE_fake __sf_fake_stderr;
 
 const u32 mcu_crp_value __attribute__ ((section(".crp_section"))) = 0x87654321;
 
@@ -62,9 +67,9 @@ const bootloader_board_config_t boot_board_config = {
 		.id = 1,
 };
 
-
 extern void boot_main();
 
 void _main(){
 	boot_main();
 }
+
