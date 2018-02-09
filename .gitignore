@@ -6,3 +6,4 @@
 *.bin
 ./build_*
 cmake_*
+*.user

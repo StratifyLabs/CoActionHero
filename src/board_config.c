@@ -239,10 +239,10 @@ uartfifo_state_t uart3_fifo_state MCU_SYS_MEM;
 char stdio_out_buffer[STDIO_BUFFER_SIZE];
 char stdio_in_buffer[STDIO_BUFFER_SIZE];
 
-fifo_config_t stdio_in_cfg = { .buffer = stdio_in_buffer, .size = STDIO_BUFFER_SIZE };
-fifo_config_t stdio_out_cfg = { .buffer = stdio_out_buffer, .size = STDIO_BUFFER_SIZE };
-fifo_state_t stdio_out_state = { .head = 0, .tail = 0, .rop = NULL, .rop_len = 0, .wop = NULL, .wop_len = 0 };
-fifo_state_t stdio_in_state = { .head = 0, .tail = 0, .rop = NULL, .rop_len = 0, .wop = NULL, .wop_len = 0 };
+const fifo_config_t stdio_in_cfg = { .buffer = stdio_in_buffer, .size = STDIO_BUFFER_SIZE };
+const fifo_config_t stdio_out_cfg = { .buffer = stdio_out_buffer, .size = STDIO_BUFFER_SIZE };
+fifo_state_t stdio_out_state;
+fifo_state_t stdio_in_state;
 
 #define CFIFO_COUNT 2
 #define CFIFO_SIZE 128
