@@ -96,7 +96,7 @@ const sos_board_config_t sos_board_config = {
 		.stderr_dev = "/dev/stdio-out",
 		.o_sys_flags = SYS_FLAG_IS_STDIO_FIFO | SYS_FLAG_IS_TRACE,
 		.sys_name = "CoAction Hero",
-		.sys_version = "1.9",
+        .sys_version = "1.10",
 		.sys_id = "-L2TX7JCRiIq-lur2o7c",
 		.sys_memory_size = SOS_BOARD_MEMORY_SIZE,
 		.start = sos_default_thread,
@@ -349,7 +349,7 @@ const fatfs_cfg_t fatfs_cfg = {
 const devfs_device_t mem_device = DEVFS_DEVICE("mem0", mcu_mem, 0, 0, 0, 0666, USER_ROOT, S_IFBLK);
 
 
-const sysfs_t const sysfs_list[] = {
+const sysfs_t sysfs_list[] = {
 		APPFS_MOUNT("/app", &mem_device, SYSFS_ALL_ACCESS), //the folder for ram/flash applications
 		DEVFS_MOUNT("/dev", devfs_list, SYSFS_READONLY_ACCESS), //the list of devices
 		SFFS_MOUNT("/home", &sffs_cfg, SYSFS_ALL_ACCESS), //the stratify file system on external RAM
