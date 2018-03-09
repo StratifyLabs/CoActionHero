@@ -7,3 +7,4 @@
 ./build_*
 cmake_*
 *.user
+build_*
