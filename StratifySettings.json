@@ -1,7 +1,7 @@
 {
     "bootsuffix": "_boot",
     "buildprefix": "build_",
-    "change": "Fixed bootloader API for missing or bad bootloaders",
+    "change": "Built with GCC 7.2.1",
     "changes": {
         "-L2TX7E7k2aQ1X3yKgZj": {
             "description": "Updated for new storage mechanism",
@@ -10,6 +10,10 @@
         "-L4wDl7oH-skTAcv1mD0": {
             "description": "Fixed bootloader API for missing or bad bootloaders",
             "version": "1.10"
+        },
+        "-L5j_T0JChTyeClDJvRz": {
+            "description": "Built with GCC 7.2.1",
+            "version": "1.11"
         }
     },
     "description": "The CoAction Hero is a development board featuring the LPC1759 and 1MB flash filesystem.",
@@ -21,5 +25,5 @@
     "tags": "nxp,lpc,lpc17xx,lpc1759,arm,cortex-m3",
     "type": "StratifyKernel",
     "uid": "QSW7bQHeDqhJEcZ0mxQ5SmEYUSL2",
-    "version": "1.10"
+    "version": "1.11"
 }
