@@ -27,7 +27,7 @@ limitations under the License.
 #define TRACE_BUFFER_SIZE (sizeof(link_trace_event_t)*TRACE_COUNT)
 char trace_buffer[TRACE_FRAME_SIZE*TRACE_COUNT];
 const ffifo_config_t board_trace_config = {
-		.count = TRACE_COUNT,
+		.frame_count = TRACE_COUNT,
 		.frame_size = sizeof(link_trace_event_t),
 		.buffer = trace_buffer
 };
