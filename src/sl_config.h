@@ -6,9 +6,10 @@
 #ifndef SL_CONFIG_H_
 #define SL_CONFIG_H_
 
-#define SL_CONFIG_VERSION_STRING "1.16"
-#define SL_CONFIG_VERSION_BCD 0x110
+#define SL_CONFIG_VERSION_STRING "1.17"
+#define SL_CONFIG_VERSION_BCD 0x111
 #define SL_CONFIG_DOCUMENT_ID "6iCy0pM3JrmGLIVOPVZv"
+#define SL_CONFIG_TEAM_ID ""
 #define SL_CONFIG_NAME "CoActionHero"
 #define SL_CONFIG_TYPE "os"
 #define SL_CONFIG_PUBLISHER "Stratify Labs, Inc"
