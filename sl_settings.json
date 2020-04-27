@@ -7,15 +7,16 @@
    "tags": "nxp,lpc,lpc17xx,lpc1759,arm,cortex-m3",
    "type": "os",
    "uid": "9cQyOTk3fZXOuMtPyf5j9X4H4b83",
-   "version": "1.17",
-   "timestamp": 1556115690,
+   "version": "1.18",
+   "timestamp": 1588008830,
    "documentId": "6iCy0pM3JrmGLIVOPVZv",
    "buildList": {
       "si2MlUfijurYTNsifrkD": "1.13",
       "wNg3Ae1fiSStRZSl8F6R": "1.14",
       "5JYvcQCYcMM24Bg3sVBo": "1.15",
       "81kJH0Ri7WmJZuq7Bp58": "1.16",
-      "aAU5JtdKX12dWkbXTrnG": "1.17"
+      "aAU5JtdKX12dWkbXTrnG": "1.17",
+      "aFcorFs0NDWpfDsuaImh": "1.18"
    },
    "hardwareId": "0x00000001"
 }

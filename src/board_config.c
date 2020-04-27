@@ -102,6 +102,7 @@ const sos_board_config_t sos_board_config = {
 	.sys_version = SL_CONFIG_VERSION_STRING,
 	.sys_id = SL_CONFIG_DOCUMENT_ID,
 	.sys_memory_size = SOS_BOARD_MEMORY_SIZE,
+	.team_id = SL_CONFIG_TEAM_ID,
 	.start = sos_default_thread,
 	.start_args = &link_transport,
 	.start_stack_size = SOS_DEFAULT_START_STACK_SIZE,
